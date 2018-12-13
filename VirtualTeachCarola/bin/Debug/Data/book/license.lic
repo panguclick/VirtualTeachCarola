@@ -1,0 +1,93 @@
+FEATURE VirtoolsProducts virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=76C900EADAB0
+FEATURE VirtoolsDev virtools 3.000 permanent uncounted HOSTID=ANY \
+	vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=297242F6D770
+FEATURE VirtoolsPhysicPack virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=475D779203AA
+FEATURE VRPackDevDistributed virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=E8791C4EDF14
+FEATURE VRPackDevImmersive virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=7C4ACA2E2182
+FEATURE VirtoolsVBS_C_Multiuser virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=31DF72FCF482
+FEATURE VirtoolsVBS_C_Database virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=CCB85DB21934
+FEATURE VirtoolsVBS_C_Download virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=A22C11020218
+FEATURE VirtoolsVBS_C_PeerServer virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=2930718E756A
+FEATURE VirtoolsVBS_C_Dev virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=77912DE0C15E
+FEATURE VirtoolsVBS_S_Dev virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=59CF353AD2D8
+FEATURE VirtoolsVBS_S_DataBase virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=40F6B562BD5A
+FEATURE VirtoolsVBS_S_DownloadDll virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=A075C944D624
+FEATURE VirtoolsVBS_S_Download virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=314DD09AEA82
+FEATURE VirtoolsVBS_S_Multiuser virtools 3.000 permanent uncounted \
+	HOSTID=ANY vendor_info="License Delivered to : Paradox" \
+	ISSUED=23-Jan-2004 NOTICE="Copyright Paradox 2004" \
+	SN=12a41797l9 SIGN=136DA3326E84
+FEATURE VirtoolsProductsFeature virtools 3.5 permanent uncounted \
+	HOSTID=ID=20060213 ISSUER=LND ck=196 SN=7330757468@CS \
+	SIGN=CF2AE1A8A15E
+FEATURE VirtoolsDevFeature virtools 3.5 permanent uncounted \
+	HOSTID=ID=20060213 ISSUER=LND ck=191 SN=7330757468@CS \
+	SIGN=0ED8E3184F2E
+FEATURE VirtoolsPhysicPackFeature virtools 3.5 permanent uncounted \
+	HOSTID=ID=20060213 ISSUER=LND ck=181 SN=7330757468@CS \
+	SIGN=61B19F121DC2
+FEATURE VRPackDevImmersiveFeature virtools 3.5 permanent uncounted \
+	HOSTID=ID=20060213 ISSUER=LND ck=145 SN=7330757468@CS \
+	SIGN=333DF7A6F826
+FEATURE VRPackDevDistributedFeature virtools 3.5 permanent uncounted \
+	HOSTID=ID=20060213 ISSUER=LND ck=192 SN=7330757468@CS \
+	SIGN=21BF6ADCC2EC
+FEATURE VirtoolsVBS_C_DevFeature virtools 3.5 permanent uncounted \
+	HOSTID=ID=20060213 ISSUER=LND ck=193 SN=7330757468@CS \
+	SIGN=1FE23972C820
+FEATURE VirtoolsVBS_C_MultiuserFeature virtools 3.5 permanent \
+	uncounted HOSTID=ID=20060213 ISSUER=LND ck=181 \
+	SN=7330757468@CS SIGN=64BB897C10B2
+FEATURE VirtoolsVBS_C_DownloadFeature virtools 3.5 permanent \
+	uncounted HOSTID=ID=20060213 ISSUER=LND ck=225 \
+	SN=7330757468@CS SIGN=80F9CABA6E80
+FEATURE VirtoolsVBS_C_DatabaseFeature virtools 3.5 permanent \
+	uncounted HOSTID=ID=20060213 ISSUER=LND ck=200 \
+	SN=7330757468@CS SIGN=E363C392F9E2
+FEATURE VirtoolsXboxPackBBFeature virtools 3.5 permanent uncounted \
+	HOSTID=ID=20060213 ISSUER=LND ck=199 SN=7330757468@CS \
+	SIGN=43C91EE27784
+FEATURE VirtoolsAIPackFeature virtools 3.5 permanent uncounted \
+	HOSTID=ID=20060213 ISSUER=LND ck=192 SN=7330757468@CS \
+	SIGN=FFD3EE628FB0

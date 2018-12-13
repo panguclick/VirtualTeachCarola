@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<zlml label="空气流量计" url="yl/空气流量计.swf"/>
+	<zlml label="点火系统" url="yl/点火系统.swf"/>
+	<zlml label="燃油喷射系统" url="yl/燃油喷射系统.swf"/>
+        <zlml label="爆震传感器" url="yl/爆震传感器.swf"/>
+        <zlml label="丰田VVT-i结构与工作原理" url="yl/丰田VVY-i结构与工作原理.swf"/>
+        <zlml label="节气门位置传感器" url="yl/节气门位置传感器.swf"/>
+        <zlml label="进气温度传感器" url="yl/进气温度传感器原理.swf"/>
+        <zlml label="冷却液温度传感器" url="yl/冷却液温度传感器.swf"/>
+        <zlml label="曲轴位置传感器" url="yl/曲轴位置传感器.swf"/>
+        <zlml label="凸轮轴位置传感器" url="yl/凸轮轴位置传感器.swf"/>
+        <zlml label="氧传感器" url="yl/氧传感器.swf"/>
+        <zlml label="油门踏板位置传感器" url="yl/油门踏板位置传感器.swf"/>
+</root>

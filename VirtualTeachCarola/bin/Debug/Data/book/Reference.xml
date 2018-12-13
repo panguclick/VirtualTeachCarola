@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<caidan1 label="ECM端子及波形" url="/Data/book/ECM端子及波形.pdf"/>
+	<caidan1 label="卡罗拉2ZR发动机控制系统" url="/Data/book/卡罗拉2ZR发动机控制系统.pdf"/>
+	<caidan1 label="故障排除方法" url="/Data/book/故障排除方法.pdf"/>
+        <caidan1 label="故障症状表" url="/Data/book/故障症状表.pdf"/>
+        <caidan1 label="零件拆装与检查" url="/Data/book/零件拆装与检查.pdf"/>
+        <caidan1 label="零件位置图" url="/Data/book/零件位置图.pdf"/>
+        <caidan1 label="诊断故障码表" url="/Data/book/诊断故障码表.pdf"/>
+        <caidan2 label="爆震传感器" url="/Data/book/爆震传感器.exe"/>
+        <caidan3 label="燃油喷射系统" url="/Data/book/燃油喷射系统.exe"/>
+</root>

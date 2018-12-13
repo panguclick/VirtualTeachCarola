@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<gzxx>
+    <gzxxmenu shijian="60">      
+        <ny>发动机启动困难，启动后怠速不良，运转不平稳；车辆在行驶中动力下降，油耗明显增加；车辆行驶中突然熄火，仪表上发动机故障灯点亮。</ny>
+    </gzxxmenu>
+    <gzxxmenu >      
+        <ny>刚刚启动后发动机失速/故障指示灯常亮</ny>
+    </gzxxmenu>
+ 
+   <gzxxmenu>    
+        <ny>动机后抖动厉害，行驶中动力下降明显，仪表发动机故障灯点亮。</ny>
+    </gzxxmenu>
+ <gzxxmenu >      
+        <ny>急加速不良/故障指示灯常亮</ny>
+    </gzxxmenu>
+   <gzxxmenu>    
+        <ny>发动机起动困难，甚至不能起动。即使启动后发动机怠速游车，加速缓慢，车速被限制3000rpm以下，排气管冒黑烟。仪表发动机故障灯点亮。</ny>
+    </gzxxmenu>
+   <gzxxmenu>    
+        <ny>发动机冷车发动机工作正常，暖机后发动机怠速抖动，排气管有轻微的冒黑烟。</ny>
+    </gzxxmenu>
+   <gzxxmenu>    
+        <ny>发动机无法起动，仪表故障灯点亮。</ny>
+    </gzxxmenu>
+   <gzxxmenu>    
+        <ny>车辆怠速正常，行驶过程中发动机转速恒定在1200-1500rpm之间，踩油门转速也不增加。</ny>
+    </gzxxmenu>
+  <gzxxmenu>    
+        <ny>冷却启动困难，发动机怠速正常，行驶中油耗增加；仪表中发动机故障灯点亮。</ny>
+    </gzxxmenu>
+  <gzxxmenu>    
+        <ny>热车起动困难，怠速发动机抖动，仪表故障灯点亮。</ny>
+    </gzxxmenu>
+  <gzxxmenu>    
+        <ny>发动机启动后抖动厉害，加速不良，车速不良加到最高值，排气管冒黑烟。仪表发动机故障灯点亮。</ny>
+    </gzxxmenu>
+  <gzxxmenu>    
+        <ny>发动机怠速游车，加速无力，排气管冒黑烟，车速限制在3000rpm以下。仪表盘发动机故障灯点亮。</ny>
+    </gzxxmenu>
+  	
+</gzxx>
