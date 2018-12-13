@@ -70,10 +70,6 @@ namespace VirtualTeachCarola
             {
                 ShowZDY();
             }
-            else if (e.command == "Close" || e.command == "hidezdy")
-            {
-                CloseZDY();
-            }
             else if (e.command.Equals("SB") && e.args.Equals("WYB"))
             {
                 ShowWYB();
@@ -123,12 +119,8 @@ namespace VirtualTeachCarola
 
         private void ShowZDY()
         {
-            loadFlash.LoadMovie(1, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy.swf");
-        }
-
-        private void CloseZDY()
-        {
-            loadFlash.LoadMovie(1, "");
+            IT2Form iT2Form = new IT2Form();
+            iT2Form.Show(this);
         }
 
         private void ShowWYB()
@@ -145,11 +137,6 @@ namespace VirtualTeachCarola
         {
             K600Form k600Form = new K600Form();
             k600Form.Show(this);
-        }
-
-        private void CloseK600()
-        {
-
         }
     }
 }

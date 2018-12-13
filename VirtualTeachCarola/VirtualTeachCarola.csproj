@@ -120,6 +120,9 @@
       <DependentUpon>SettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="System\MouseEventHandler.cs" />
+    <EmbeddedResource Include="IT2Form.resx">
+      <DependentUpon>IT2Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="K600Form.resx">
       <DependentUpon>K600Form.cs</DependentUpon>
     </EmbeddedResource>
