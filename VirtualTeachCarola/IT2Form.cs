@@ -25,8 +25,9 @@ namespace VirtualTeachCarola
         {
             pictureBox1.Load(System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy_title.jpg");
             axShockwaveFlash1.DisableLocalSecurity();
-            axShockwaveFlash1.ScaleMode = 1;
-            //axShockwaveFlash1.SAlign = "LB";
+            axShockwaveFlash1.ScaleMode = 0;
+            axShockwaveFlash1.SAlign = "B";
+            axShockwaveFlash1.Dock = DockStyle.Bottom;
 
             axShockwaveFlash1.FSCommand += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
             axShockwaveFlash1.FlashCall += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
@@ -40,6 +41,27 @@ namespace VirtualTeachCarola
 
         private void FlashFlashCommand(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEvent e)
         {
+            if(e.command == "hidezdy")
+            {
+                this.Close();
+            }
+            else if(e.command == "DTC" && e.args =="FDJ")
+            {
+                ShowDTC();
+            }
+            else if (e.command == "DLIST" && e.args == "FDJ")
+            {
+                ShowDLIST();
+            }
+            else if (e.command == "hide")
+            {
+                HideControl();
+            }
+            else if (e.command == "ZD" && e.args == "FDJ")
+            {
+
+            }
+
             Console.WriteLine("e.command = " + e.command);
             Console.WriteLine("e.args = " + e.args);
         }
@@ -75,6 +97,28 @@ namespace VirtualTeachCarola
                 currentYPosition = 0;
                 beginMove = false;
             }
+        }
+
+        private void ShowDTC()
+        {
+            DTCListBox.Visible = true;
+            DTCListBox.Items.Clear();
+        }
+
+        private void ShowDLIST()
+        {
+
+        }
+
+        private void HideControl()
+        {
+            DTCListBox.Visible = false;
+
+        }
+
+        private void DTCListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -42,7 +42,7 @@
             this.flashControl.Location = new System.Drawing.Point(0, 45);
             this.flashControl.Name = "flashControl";
             this.flashControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("flashControl.OcxState")));
-            this.flashControl.Size = new System.Drawing.Size(730, 475);
+            this.flashControl.Size = new System.Drawing.Size(730, 520);
             this.flashControl.TabIndex = 0;
             this.flashControl.Enter += new System.EventHandler(this.flashControl_Enter);
             // 
@@ -52,7 +52,7 @@
             this.titlePicture.Location = new System.Drawing.Point(0, 0);
             this.titlePicture.Name = "titlePicture";
             this.titlePicture.Size = new System.Drawing.Size(730, 45);
-            this.titlePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.titlePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.titlePicture.TabIndex = 1;
             this.titlePicture.TabStop = false;
             this.titlePicture.Click += new System.EventHandler(this.titlePicture_Click);
@@ -78,7 +78,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.flashControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.titlePicture)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

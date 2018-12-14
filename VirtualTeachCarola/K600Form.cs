@@ -27,8 +27,9 @@ namespace VirtualTeachCarola
         {
             titlePicture.Load(System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\k600.png");
             flashControl.DisableLocalSecurity();
-            flashControl.Dock = DockStyle.Fill;
-            flashControl.ScaleMode = 2;
+            flashControl.Dock = DockStyle.Bottom;
+            flashControl.ScaleMode = 0;
+            flashControl.SAlign = "B";
             flashControl.FSCommand += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
             flashControl.FlashCall += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
 
