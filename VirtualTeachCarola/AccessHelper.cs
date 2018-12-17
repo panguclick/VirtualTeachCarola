@@ -106,8 +106,8 @@ namespace VirtualTeachCarola
         /// <param name="db_path">数据库路径</param>
         public AccessHelper(string db_path)
         {
-            //conn_str ="Provider=Microsoft.Jet.OLEDB.4.0;Data Source='"+ db_path + "'";
-            conn_str = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + db_path + "'";
+            conn_str ="Provider=Microsoft.Jet.OLEDB.4.0;Data Source='"+ db_path + "'";
+            //conn_str = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + db_path + "'";
 
             InitDB();
         }
@@ -198,9 +198,7 @@ namespace VirtualTeachCarola
 
                 //ole_command.CommandText = strSql;
                 //ole_command.Connection = ole_connection;
-
                 //ole_reader = ole_command.ExecuteReader(CommandBehavior.Default);
-
                 //dt = ConvertOleDbReaderToDataTable(ref ole_reader);
 
                 OleDbDataAdapter dbDataAdapter = new OleDbDataAdapter(strSql, ole_connection); //创建适配对象

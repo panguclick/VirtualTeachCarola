@@ -15,8 +15,10 @@ namespace VirtualTeachCarola
     public partial class MainForm : Form
     {
         Car mCar = new Car();
-        DataTable mDataTable = null;
+        DataTable mWYBTable = null;
+        DataTable mSBQTable = null;
         WYBDevice mWYBDvice = new WYBDevice();
+        SBQDevice mSBQDvice = new SBQDevice();
 
         public MainForm()
         {
@@ -29,17 +31,18 @@ namespace VirtualTeachCarola
             loadFlash.DisableLocalSecurity();
             loadFlash.Dock = DockStyle.Fill;
             loadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\login.swf");
-            loadFlash.FlashCall += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
-            loadFlash.FSCommand += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
-            loadFlash.FSCommand += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(mCar.FlashFlashCommand);
-            loadFlash.FSCommand += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(mWYBDvice.FlashFlashCommand);
+            loadFlash.FlashCall += new _IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
+            loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
+            loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mCar.FlashFlashCommand);
+            loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mWYBDvice.FlashFlashCommand);
+            loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mSBQDvice.FlashFlashCommand);
 
             mWYBDvice.Car = mCar;
             mWYBDvice.FlashContrl = loadFlash;
 
         }
 
-        void FlashFlashCall(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEvent e)
+        void FlashFlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
         {
         }
 
@@ -74,6 +77,10 @@ namespace VirtualTeachCarola
             {
                 ShowWYB();
             }
+            else if (e.command.Equals("SB") && e.args.Equals("SBQ"))
+            {
+                ShowSBQ();
+            }
             else if(e.command == "vt" && e.args == "0")
             {
                 CloseWYB();
@@ -102,7 +109,9 @@ namespace VirtualTeachCarola
         private void Login()
         {
             loadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\index.swf");
-            mDataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM CkValue");
+            mWYBTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM CkValue");
+            mSBQTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM BYT");
+
         }
 
         private void ShowSetting()
@@ -126,11 +135,24 @@ namespace VirtualTeachCarola
         private void ShowWYB()
         {
             mWYBDvice.TipValue = "";
-            mWYBDvice.DataTable = mDataTable;
+            mWYBDvice.DataTable = mWYBTable;
         }
 
         private void CloseWYB()
         {
+
+        }
+
+        private void ShowSBQ()
+        {
+            mWYBDvice.DataTable = mSBQTable;
+            mWYBDvice.TipValue = "";
+            loadFlash.FSCommand -= mWYBDvice.FlashFlashCommand;
+        }
+
+        private void CloseSBQ()
+        {
+
         }
 
         private void ShowK600()

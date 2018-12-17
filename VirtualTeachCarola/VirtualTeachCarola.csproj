@@ -83,6 +83,7 @@
     <Compile Include="Base\RBData.cs" />
     <Compile Include="Car.cs" />
     <Compile Include="Device\Device.cs" />
+    <Compile Include="Device\SBQDevice.cs" />
     <Compile Include="Device\WYBDevice.cs" />
     <Compile Include="IForcePlayer.cs">
       <SubType>Component</SubType>

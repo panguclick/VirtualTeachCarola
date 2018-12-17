@@ -16,11 +16,10 @@ namespace VirtualTeachCarola
         {
             if (e.command == "power" || e.command == "sc" ||e.command == "youmeng" ||e.command == "speed")
             {
-                if (BbValue.BaseValue != "0" && RbValue.BaseValue != "0")
+                if (BbValue.BaseValue != "" && RbValue.BaseValue != "")
                 {
                     UpdateRBValue();
                 }
-
             }
             else if (e.command == "vt")
             {
@@ -29,7 +28,7 @@ namespace VirtualTeachCarola
 
                 if (ValueType == 1)
                 {
-                    if (BbValue.BaseValue != "0" && RbValue.BaseValue != "0")
+                    if (BbValue.BaseValue != "" && RbValue.BaseValue != "")
                     {
                         UpdateRBValue();
                     }
@@ -43,8 +42,6 @@ namespace VirtualTeachCarola
                 {
                     StartTime();
                 }
-
-
             }
             else if( e.command == "BB")
             {
@@ -72,6 +69,9 @@ namespace VirtualTeachCarola
                     SetTipValue(0);
                 }
             }
+            else if (e.command == "ZL")
+            {
+            }
 
             ShowValue();
         }
@@ -89,6 +89,11 @@ namespace VirtualTeachCarola
             bool res = false;
             try
             {
+                if(data.BaseValue == "")
+                {
+                    return false;
+                }
+
                 string sql = "CheckPoint1 = '" + data.BaseValue
                     + "' AND Gearshift = '" + Car.Gearshift
                     + "' AND accorrun = " + Car.Power()
@@ -167,7 +172,6 @@ namespace VirtualTeachCarola
                 ThreadTime.Dispose();
                 ThreadTime = null;
             }
-
         }
 
         private void SetTipValue(float value)

@@ -8,13 +8,13 @@ namespace VirtualTeachCarola.Base
 {
     class RBData
     {
-        string baseValue = "0";
+        string baseValue = "";
         float minValue = 0.0f;
         float maxValue = 0.0f;
 
         public void Reset()
         {
-            baseValue = "0";
+            baseValue = "";
             minValue = 0.0f;
             maxValue = 0.0f;
         }
