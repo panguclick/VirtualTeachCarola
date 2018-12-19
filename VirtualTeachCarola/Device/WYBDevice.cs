@@ -133,7 +133,7 @@ namespace VirtualTeachCarola
         {
             if(ExcuteSQL(BbValue) && ExcuteSQL(RbValue))
             {
-                SetTipValue(BbValue.MinValue - RbValue.MinValue);
+                SetTipValue(RbValue.MinValue - BbValue.MinValue);
             }
             else
             {

@@ -13,7 +13,6 @@ namespace VirtualTeachCarola
         private string conn_str = null;
         private OleDbConnection ole_connection = null;
         private OleDbCommand ole_command = null;
-        private OleDbDataReader ole_reader = null;
         private static AccessHelper g_accessHelper = null;
 
         public static AccessHelper GetInstance()
@@ -83,8 +82,6 @@ namespace VirtualTeachCarola
                     return;
                 }
 
-                ole_reader.Close();
-                ole_reader.Dispose();
                 ole_connection.Close();
             }
             catch (System.Exception e)
@@ -106,8 +103,8 @@ namespace VirtualTeachCarola
         /// <param name="db_path">数据库路径</param>
         public AccessHelper(string db_path)
         {
-            conn_str ="Provider=Microsoft.Jet.OLEDB.4.0;Data Source='"+ db_path + "'";
-            //conn_str = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + db_path + "'";
+            //conn_str ="Provider=Microsoft.Jet.OLEDB.4.0;Data Source='"+ db_path + "'";
+            conn_str = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + db_path + "'";
 
             InitDB();
         }
@@ -231,7 +228,6 @@ namespace VirtualTeachCarola
 
             try
             {
-                ole_connection.Open();//打开数据库连接
                 if (ole_connection.State == ConnectionState.Closed)
                 {
                     return nResult;
@@ -249,13 +245,33 @@ namespace VirtualTeachCarola
             }
             finally
             {
-                if (ole_connection.State != ConnectionState.Closed)
-                {
-                    ole_connection.Close();
-                }
             }
 
             return nResult;
+        }
+
+
+        /// datatable去重
+        /// </summary>
+        /// <param name="dtSource">需要去重的datatable</param>
+        /// <param name="columnNames">依据哪些列去重</param>
+        /// <returns></returns>
+        public static DataTable GetDistinctTable(DataTable dtSource, params string[] columnNames)
+        {
+            DataTable distinctTable = dtSource.Clone();
+            try
+            {
+                if (dtSource != null && dtSource.Rows.Count > 0)
+                {
+                    DataView dv = new DataView(dtSource);
+                    distinctTable = dv.ToTable(true, columnNames);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return distinctTable;
         }
     }
 }

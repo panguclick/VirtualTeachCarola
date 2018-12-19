@@ -16,6 +16,10 @@ namespace VirtualTeachCarola
         int isBatty = 0;
         int isTemp = 0;
 
+        string carType = "";
+        string carCode = "";
+        string enginType = "";
+
         public string Accorrun { get => accorrun; set => accorrun = value; }
         public int BreakType { get => breakType; set => breakType = value; }
         public int Speed { get => speed; set => speed = value; }
@@ -23,6 +27,9 @@ namespace VirtualTeachCarola
         public int IsBatty { get => isBatty; set => isBatty = value; }
         public int IsTemp { get => isTemp; set => isTemp = value; }
         public string Gearshift { get => gearshift; set => gearshift = value; }
+        public string CarType { get => carType; set => carType = value; }
+        public string CarCode { get => carCode; set => carCode = value; }
+        public string EnginType { get => enginType; set => enginType = value; }
 
         public void FlashFlashCommand(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEvent e)
         {

@@ -85,6 +85,18 @@
     <Compile Include="Device\Device.cs" />
     <Compile Include="Device\SBQDevice.cs" />
     <Compile Include="Device\WYBDevice.cs" />
+    <Compile Include="GZDQRForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GZDQRForm.Designer.cs">
+      <DependentUpon>GZDQRForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GZJLForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GZJLForm.Designer.cs">
+      <DependentUpon>GZJLForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IForcePlayer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -114,6 +126,12 @@
     <Compile Include="ReferenceForm.Designer.cs">
       <DependentUpon>ReferenceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SetGZForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetGZForm.Designer.cs">
+      <DependentUpon>SetGZForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +139,13 @@
       <DependentUpon>SettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="System\MouseEventHandler.cs" />
+    <Compile Include="User.cs" />
+    <EmbeddedResource Include="GZDQRForm.resx">
+      <DependentUpon>GZDQRForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GZJLForm.resx">
+      <DependentUpon>GZJLForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IT2Form.resx">
       <DependentUpon>IT2Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -143,6 +168,9 @@
     </Compile>
     <EmbeddedResource Include="ReferenceForm.resx">
       <DependentUpon>ReferenceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetGZForm.resx">
+      <DependentUpon>SetGZForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingForm.resx">
       <DependentUpon>SettingForm.cs</DependentUpon>

@@ -10,7 +10,7 @@ namespace VirtualTeachCarola
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        private AxShockwaveFlashObjects.AxShockwaveFlash loadFlash;
+        public AxShockwaveFlashObjects.AxShockwaveFlash loadFlash;
 
         /// <summary>
         /// 清理所有正在使用的资源。
