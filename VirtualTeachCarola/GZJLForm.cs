@@ -54,31 +54,31 @@ namespace VirtualTeachCarola
             labelCarCode.Text = mCar.CarCode;
             labelEnginType.Text = mCar.EnginType;
 
-            DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM SubmitReport WHERE TestID = '-2018121918617' ORDER BY ID");
+            DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM SubmitReport WHERE TestID = '-20181220113550' ORDER BY ID");
             DataRow[] rows = dataTable.Select();
 
             for(int i = 0; i < rows.Length; i++)
             {
-                string content = ((DateTime)rows[i]["ID"]).ToString("d") + " ";
+                string content = ((DateTime)rows[i]["ID"]).ToString("d");
 
-                if(rows[i]["Ename"] != "")
+                if (rows[i]["wgcz"] != null && rows[i]["wgcz"].ToString() == "1")
+                {
+                    content += " 违规操作:";
+                }
+
+                if (rows[i]["Ename"].ToString() != "")
                 {
                     content += " " + rows[i]["Ename"];
                 }
 
-                if (rows[i]["Oper"] != "")
+                if (rows[i]["Oper"].ToString() != "")
                 {
                     content += " " + rows[i]["Oper"];
                 }
 
-                if (rows[i]["SubMit"] != "")
+                if (rows[i]["SubMit"].ToString() != "")
                 {
                     content += " " + rows[i]["SubMit"];
-                }
-
-                if(rows[i]["wgcz"] != null && rows[i]["wgcz"].ToString() == "1")
-                {
-                    content += " 违规操作";
                 }
 
                 listBox1.Items.Add(content);

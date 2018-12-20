@@ -75,9 +75,9 @@ namespace VirtualTeachCarola
                     return false;
                 }
 
-                string sql = "CheckPoint1 = '" + rbData.BaseValue
-                    + "' AND CheckPoint2 = '" + bbData.BaseValue
-                    + "' AND accorrun = " + Car.Power()
+                string sql = "CkPoint1 = '" + rbData.BaseValue
+                    + "' AND CkPoint2 = '" + bbData.BaseValue
+                    + "' AND Accorrun = " + Car.Power()
                     + " AND IsLine = " + Car.IsLine;
                 DataRow[] rowData = this.DataTable.Select(sql);
 
@@ -107,6 +107,11 @@ namespace VirtualTeachCarola
         private void SetTipValue(string value)
         {
             TipValue = value;
+        }
+
+        private void Record()
+        {
+
         }
     }
 }

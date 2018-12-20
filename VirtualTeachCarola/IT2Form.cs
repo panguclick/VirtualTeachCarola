@@ -23,6 +23,7 @@ namespace VirtualTeachCarola
 
         private void axShockwaveFlash1_Enter(object sender, EventArgs e)
         {
+            HideControl();
             pictureBox1.Load(System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy_title.jpg");
             axShockwaveFlash1.DisableLocalSecurity();
             axShockwaveFlash1.ScaleMode = 0;
@@ -33,6 +34,35 @@ namespace VirtualTeachCarola
             axShockwaveFlash1.FlashCall += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
 
             axShockwaveFlash1.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy.swf");
+
+            DataRow[] rows = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM zdy").Select();
+
+            for(int i = 0; i < rows.Length; i++)
+            {
+                ListViewItem lvi = new ListViewItem();
+
+                if(rows[i]["Choice"].GetType().Name == "DBNull")
+                {
+                    lvi.Text = " ";
+                }
+                else
+                {
+                    lvi.Text = (string)rows[i]["Choice"];
+                }
+                lvi.SubItems.Add((string)rows[i]["ProName"]);
+                lvi.SubItems.Add((string)rows[i]["PValues"]);
+
+                if (rows[i]["Units"].GetType().Name == "DBNull")
+                {
+                    lvi.Text = " ";
+                }
+                else
+                {
+                    lvi.Text = (string)rows[i]["Units"];
+                }
+
+                this.listViewDATA.Items.Add(lvi);
+            }
         }
 
         void FlashFlashCall(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEvent e)
@@ -101,22 +131,25 @@ namespace VirtualTeachCarola
 
         private void ShowDTC()
         {
-            DTCListBox.Visible = true;
-            DTCListBox.Items.Clear();
         }
 
         private void ShowDLIST()
         {
+            listViewDATA.Visible = true;
 
         }
 
         private void HideControl()
         {
-            DTCListBox.Visible = false;
-
+            listViewDATA.Visible = false;
         }
 
         private void DTCListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ListView_DoubleClick(object sender, MouseEventArgs e)
         {
 
         }
