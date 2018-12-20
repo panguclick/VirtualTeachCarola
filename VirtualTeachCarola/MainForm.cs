@@ -174,6 +174,7 @@ namespace VirtualTeachCarola
         private void ShowZDY()
         {
             IT2Form iT2Form = new IT2Form();
+            iT2Form.MCar = mCar;
             iT2Form.Show(this);
         }
 
@@ -200,6 +201,7 @@ namespace VirtualTeachCarola
         private void ShowK600()
         {
             K600Form k600Form = new K600Form();
+            k600Form.MCar = mCar;
             k600Form.Show(this);
         }
 

@@ -16,6 +16,10 @@ namespace VirtualTeachCarola
         int currentXPosition;
         int currentYPosition;
 
+        private Car mCar = null;
+
+        internal Car MCar { get => mCar; set => mCar = value; }
+
         public IT2Form()
         {
             InitializeComponent();
@@ -34,6 +38,15 @@ namespace VirtualTeachCarola
             axShockwaveFlash1.FlashCall += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
 
             axShockwaveFlash1.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy.swf");
+
+            if(mCar.Power() == 2)
+            {
+                axShockwaveFlash1.SetVariable("enterBTN", "1");
+            }
+            else
+            {
+                axShockwaveFlash1.SetVariable("enterBTN", "0");
+            }
 
             DataRow[] rows = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM zdy").Select();
 
@@ -90,6 +103,17 @@ namespace VirtualTeachCarola
             else if (e.command == "ZD" && e.args == "FDJ")
             {
 
+            }
+            else if (e.command == "power")
+            {
+                if (mCar.Power() == 2)
+                {
+                    axShockwaveFlash1.SetVariable("enterBTN", "1");
+                }
+                else
+                {
+                    axShockwaveFlash1.SetVariable("enterBTN", "0");
+                }
             }
 
             Console.WriteLine("e.command = " + e.command);

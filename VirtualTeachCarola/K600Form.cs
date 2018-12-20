@@ -22,6 +22,9 @@ namespace VirtualTeachCarola
         int currentXPosition;
         int currentYPosition;
 
+        private Car mCar = null;
+
+        internal Car MCar { get => mCar; set => mCar = value; }
 
         private void flashControl_Enter(object sender, EventArgs e)
         {
@@ -34,6 +37,15 @@ namespace VirtualTeachCarola
             flashControl.FlashCall += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
 
             flashControl.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\KT600.swf");
+
+            if (MCar.Power() == 2)
+            {
+                flashControl.SetVariable("enterBTN", "1");
+            }
+            else
+            {
+                flashControl.SetVariable("enterBTN", "0");
+            }
         }
 
         private void Form_MouseDown(object sender, MouseEventArgs e)
