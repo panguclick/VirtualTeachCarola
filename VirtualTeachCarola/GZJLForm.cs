@@ -54,7 +54,7 @@ namespace VirtualTeachCarola
             labelCarCode.Text = mCar.CarCode;
             labelEnginType.Text = mCar.EnginType;
 
-            DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM SubmitReport WHERE TestID = '-20181220113550' ORDER BY ID");
+            DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM SubmitReport WHERE TestID = '"+ mUser.PracticID +"' ORDER BY ID");
             DataRow[] rows = dataTable.Select();
 
             for(int i = 0; i < rows.Length; i++)
@@ -87,6 +87,11 @@ namespace VirtualTeachCarola
 
         private void ListBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
+            if(e.Index == -1)
+            {
+                return;
+            }
+
             string content = ((ListBox)sender).Items[e.Index].ToString();
 
             e.DrawBackground();

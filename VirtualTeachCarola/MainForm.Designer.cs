@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using AxShockwaveFlashObjects;
 
 namespace VirtualTeachCarola
 {
@@ -10,7 +11,9 @@ namespace VirtualTeachCarola
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        public AxShockwaveFlashObjects.AxShockwaveFlash loadFlash;
+        private AxShockwaveFlashObjects.AxShockwaveFlash loadFlash;
+
+        public AxShockwaveFlash LoadFlash { get => loadFlash; set => loadFlash = value; }
 
         /// <summary>
         /// 清理所有正在使用的资源。
@@ -34,28 +37,28 @@ namespace VirtualTeachCarola
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.loadFlash = new IForcePlayer();
-            ((System.ComponentModel.ISupportInitialize)(this.loadFlash)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.loadFlash)).EndInit();
+            this.LoadFlash = new IForcePlayer();
+            ((System.ComponentModel.ISupportInitialize)(this.LoadFlash)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LoadFlash)).EndInit();
 
             this.SuspendLayout();
             // 
             // loadFlash
             // 
-            this.loadFlash.Enabled = true;
-            this.loadFlash.Location = new System.Drawing.Point(0, 0);
-            this.loadFlash.Name = "loadFlash";
-            this.loadFlash.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("loadFlash.OcxState")));
+            this.LoadFlash.Enabled = true;
+            this.LoadFlash.Location = new System.Drawing.Point(0, 0);
+            this.LoadFlash.Name = "loadFlash";
+            this.LoadFlash.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("loadFlash.OcxState")));
 
             Rectangle ScreenArea = System.Windows.Forms.Screen.GetBounds(this);
-            this.loadFlash.Size = new System.Drawing.Size(ScreenArea.Width, ScreenArea.Height);
-            this.loadFlash.TabIndex = 0;
+            this.LoadFlash.Size = new System.Drawing.Size(ScreenArea.Width, ScreenArea.Height);
+            this.LoadFlash.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.Controls.Add(this.loadFlash);
+            this.Controls.Add(this.LoadFlash);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainForm";
             this.Text = "虚拟仿真教学-卡罗拉";

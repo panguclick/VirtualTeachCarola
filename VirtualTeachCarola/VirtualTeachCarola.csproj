@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessHelper.cs" />
+    <Compile Include="Base\Manager.cs" />
     <Compile Include="Base\RBData.cs" />
     <Compile Include="Car.cs" />
     <Compile Include="Device\Device.cs" />

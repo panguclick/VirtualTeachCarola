@@ -28,20 +28,20 @@ namespace VirtualTeachCarola
 
         private void Main_Load(object sender, EventArgs e)
         {
-            loadFlash.AlignMode = 4;
-            loadFlash.DisableLocalSecurity();
-            loadFlash.Dock = DockStyle.Fill;
-            loadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\login.swf");
-            loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
-            loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mCar.FlashFlashCommand);
+            LoadFlash.AlignMode = 4;
+            LoadFlash.DisableLocalSecurity();
+            LoadFlash.Dock = DockStyle.Fill;
+            LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\login.swf");
+            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
+            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mCar.FlashFlashCommand);
             //loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mWYBDvice.FlashFlashCommand);
-            loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mSBQDvice.FlashFlashCommand);
+            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mSBQDvice.FlashFlashCommand);
 
             mWYBDvice.Car = mCar;
-            mWYBDvice.FlashContrl = loadFlash;
+            mWYBDvice.FlashContrl = LoadFlash;
 
             mSBQDvice.Car = mCar;
-            mSBQDvice.FlashContrl = loadFlash;
+            mSBQDvice.FlashContrl = LoadFlash;
         }
 
         public void FlashFlashCommand(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEvent e)
@@ -137,18 +137,18 @@ namespace VirtualTeachCarola
 
         private void QuitApp()
         {
-            loadFlash.FSCommand -= FlashFlashCommand;
+            LoadFlash.FSCommand -= FlashFlashCommand;
 
             SetGZForm form = new SetGZForm();
             form.ShowDialog(this);
 
-            loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
+            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
 
         }
 
         private void Login(string argv)
         {
-            loadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\index.swf");
+            LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\index.swf");
             mWYBDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM CkValue");
             mSBQDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM BYT");
 
@@ -175,6 +175,7 @@ namespace VirtualTeachCarola
         {
             IT2Form iT2Form = new IT2Form();
             iT2Form.MCar = mCar;
+            iT2Form.MUser = mUser;
             iT2Form.Show(this);
         }
 

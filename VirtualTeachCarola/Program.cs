@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualTeachCarola.Base;
 
 namespace VirtualTeachCarola
 {
@@ -16,7 +17,9 @@ namespace VirtualTeachCarola
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            MainForm mainForm = new MainForm();
+            Manager.GetInstance().MMainForm = mainForm;
+            Application.Run(mainForm);
         }
     }
 }

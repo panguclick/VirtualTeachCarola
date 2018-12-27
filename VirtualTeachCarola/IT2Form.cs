@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualTeachCarola.Base;
 
 namespace VirtualTeachCarola
 {
@@ -17,44 +18,30 @@ namespace VirtualTeachCarola
         int currentYPosition;
 
         private Car mCar = null;
+        private User mUser = null;
 
         internal Car MCar { get => mCar; set => mCar = value; }
+        internal User MUser { get => mUser; set => mUser = value; }
 
         public IT2Form()
         {
             InitializeComponent();
         }
 
-        private void axShockwaveFlash1_Enter(object sender, EventArgs e)
+        private void InitData()
         {
-            HideControl();
-            pictureBox1.Load(System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy_title.jpg");
-            axShockwaveFlash1.DisableLocalSecurity();
-            axShockwaveFlash1.ScaleMode = 0;
-            axShockwaveFlash1.SAlign = "B";
-            axShockwaveFlash1.Dock = DockStyle.Bottom;
-
-            axShockwaveFlash1.FSCommand += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
-            axShockwaveFlash1.FlashCall += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
-
-            axShockwaveFlash1.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy.swf");
-
-            if(mCar.Power() == 2)
+            if(this.listViewDATA.Items.Count > 0)
             {
-                axShockwaveFlash1.SetVariable("enterBTN", "1");
-            }
-            else
-            {
-                axShockwaveFlash1.SetVariable("enterBTN", "0");
+                return;
             }
 
             DataRow[] rows = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM zdy").Select();
 
-            for(int i = 0; i < rows.Length; i++)
+            for (int i = 0; i < rows.Length; i++)
             {
                 ListViewItem lvi = new ListViewItem();
 
-                if(rows[i]["Choice"].GetType().Name == "DBNull")
+                if (rows[i]["Choice"].GetType().Name == "DBNull")
                 {
                     lvi.Text = " ";
                 }
@@ -67,25 +54,71 @@ namespace VirtualTeachCarola
 
                 if (rows[i]["Units"].GetType().Name == "DBNull")
                 {
-                    lvi.Text = " ";
+                    lvi.SubItems.Add(" ");
                 }
                 else
                 {
-                    lvi.Text = (string)rows[i]["Units"];
+                    lvi.SubItems.Add((string)rows[i]["Units"]);
                 }
 
                 this.listViewDATA.Items.Add(lvi);
             }
+
+            rows = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM GzInfo").Select();
+
+            for (int i = 0; i < rows.Length; i++)
+            {
+
+                if (rows[i]["Choice"].ToString() == "选择")
+                {
+                    ListViewItem lvi = new ListViewItem();
+
+                    lvi.Text = (string)rows[i]["DTID"];
+                    lvi.SubItems.Add((string)rows[i]["DTC"]);
+
+                    this.listViewDTC.Items.Add(lvi);
+                }
+            }
+
         }
 
-        void FlashFlashCall(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEvent e)
+        private void Flash_Enter(object sender, EventArgs e)
         {
+
+            if(axShockwaveFlash1.Movie != null)
+            {
+                return;
+            }
+
+            pictureBox1.Load(System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy_title.jpg");
+            axShockwaveFlash1.DisableLocalSecurity();
+            axShockwaveFlash1.ScaleMode = 0;
+            axShockwaveFlash1.SAlign = "B";
+            axShockwaveFlash1.Dock = DockStyle.Bottom;
+
+            axShockwaveFlash1.FSCommand += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
+            Manager.GetInstance().RegisterEvent(new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand));
+            axShockwaveFlash1.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy.swf");
+
+            if (mCar.Power() == 2)
+            {
+                axShockwaveFlash1.SetVariable("enterBTN", "1");
+            }
+            else
+            {
+                axShockwaveFlash1.SetVariable("enterBTN", "0");
+            }
+
+            InitData();
+            HideControl();
         }
 
         private void FlashFlashCommand(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEvent e)
         {
             if(e.command == "hidezdy")
             {
+                Manager.GetInstance().UnRegisterEvent(FlashFlashCommand);
+
                 this.Close();
             }
             else if(e.command == "DTC" && e.args =="FDJ")
@@ -100,9 +133,27 @@ namespace VirtualTeachCarola
             {
                 HideControl();
             }
-            else if (e.command == "ZD" && e.args == "FDJ")
+            else if (e.command == "RJL" && e.args == "FDJ")
             {
-
+                for (int i = 0; i < listViewDTC.Items.Count; i++)
+                {
+                    string id = listViewDTC.Items[i].SubItems[0].Text.ToString().Trim();
+                    string value = listViewDTC.Items[i].SubItems[1].Text.ToString().Trim();
+                    Record(id, value);
+                }
+            }
+            else if (e.command == "JL" && e.args == "FDJ")
+            {
+                for (int i = 0; i < listViewDATA.Items.Count; i++)
+                {
+                    string select = listViewDATA.Items[i].SubItems[0].Text.ToString().Trim();
+                    if(select == "√")
+                    {
+                        string id = listViewDATA.Items[i].SubItems[1].Text.ToString().Trim();
+                        string value = listViewDATA.Items[i].SubItems[2].Text.ToString().Trim();
+                        Record(id, value);
+                    }
+                }
             }
             else if (e.command == "power")
             {
@@ -155,17 +206,21 @@ namespace VirtualTeachCarola
 
         private void ShowDTC()
         {
+            listViewDATA.Visible = false;
+            listViewDTC.Visible = true;
+
         }
 
         private void ShowDLIST()
         {
             listViewDATA.Visible = true;
-
+            listViewDTC.Visible = false;
         }
 
         private void HideControl()
         {
             listViewDATA.Visible = false;
+            listViewDTC.Visible = false;
         }
 
         private void DTCListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -175,7 +230,44 @@ namespace VirtualTeachCarola
 
         private void ListView_DoubleClick(object sender, MouseEventArgs e)
         {
+            if(listViewDATA.Visible == false)
+            {
+                return;
+            }
 
+            for (int i = 0; i < listViewDATA.Items.Count; i++)
+            {
+                if (listViewDATA.Items[i].Selected)
+                {
+                    string value = listViewDATA.Items[i].SubItems[0].Text.ToString().Trim();
+                    value = value == "√" ? "" : "√";
+                    listViewDATA.Items[i].SubItems[0].Text = value;
+                    break;
+                }
+            }
+        }
+
+        private void Record(string id, string value)
+        {
+
+            string sql = "insert into RecordZdy (ElementName,EValue,TestTime,TestID) values ('"
+                        + id + "','"
+                        + value + "','"
+                        + DateTime.Now.ToLocalTime().ToString() + "','"
+                        + mUser.PracticID
+                        + "')";
+
+            AccessHelper.GetInstance().ExcuteSql(sql);
+
+
+            sql = "insert into SubmitReport (ID,Ename,Oper,TestID) values ('"
+                        + DateTime.Now.ToLocalTime().ToString() + "','"
+                        + "诊断仪记录:" + "','"
+                        + id + ":" + value + "','"
+                        + MUser.PracticID
+                        + "')";
+
+            AccessHelper.GetInstance().ExcuteSql(sql);
         }
     }
 }
