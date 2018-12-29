@@ -71,6 +71,15 @@ namespace VirtualTeachCarola
             }
             else if (e.command == "ZL")
             {
+                Record();
+            }
+            else if (e.args == "ZXJC"
+                    || e.args == "JC")
+            {
+                DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM Element WHERE ID ='" + e.command + "'");
+                DataRow[] rows = dataTable.Select();
+
+                Target = rows[0];
             }
 
             ShowValue();
@@ -84,7 +93,7 @@ namespace VirtualTeachCarola
             t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
         }
 
-        private bool ExcuteSQL(RBData data)
+        private bool ExcuteSQLNeedOnePoint(RBData data)
         {
             bool res = false;
             try
@@ -129,9 +138,92 @@ namespace VirtualTeachCarola
             return res;
         }
 
-        private void UpdateRBValue()
+        private bool ExcuteSQLNeedTwoPoint(RBData bData, RBData rData)
         {
-            if(ExcuteSQL(BbValue) && ExcuteSQL(RbValue))
+            bool res = false;
+            bool isMax = false;
+            try
+            {
+                if (bData.BaseValue == "" || rData.BaseValue == "")
+                {
+                    return false;
+                }
+
+                string sql = "CheckPoint1 = '" + rData.BaseValue
+                    + "' AND CheckPoint2 = '" + bData.BaseValue
+                    + "' AND Gearshift = '" + Car.Gearshift
+                    + "' AND accorrun = " + Car.Power()
+                    + " AND breaks = " + Car.BreakType
+                    + " AND ValueType = " + ValueType
+                    + " AND IsLine = " + Car.IsLine;
+                DataRow[] rows = this.DataTable.Select(sql);
+
+                if (rows.Length == 0)
+                {
+                    sql = "CheckPoint1 = '" + bData.BaseValue
+                        + "' AND CheckPoint2 = '" + rData.BaseValue
+                        + "' AND Gearshift = '" + Car.Gearshift
+                        + "' AND accorrun = " + Car.Power()
+                        + " AND breaks = " + Car.BreakType
+                        + " AND ValueType = " + ValueType
+                        + " AND IsLine = " + Car.IsLine;
+                    rows = this.DataTable.Select(sql);
+                    if (rows.Length == 0)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    isMax = true;
+                }
+
+                string v = (string)rows[0]["Nvalue"];
+                string[] sArray = Regex.Split(v, "-", RegexOptions.IgnoreCase);
+
+                if(isMax)
+                {
+                    rData.MinValue = float.Parse(sArray[0]);
+
+                    if (sArray.Length > 1)
+                    {
+                        rData.MaxValue = float.Parse(sArray[1]);
+                    }
+                    else
+                    {
+                        rData.MaxValue = float.Parse(sArray[0]);
+                    }
+                }
+                else
+                {
+                    bData.MinValue = float.Parse(sArray[0]);
+
+                    if (sArray.Length > 1)
+                    {
+                        bData.MaxValue = float.Parse(sArray[1]);
+                    }
+                    else
+                    {
+                        bData.MaxValue = float.Parse(sArray[0]);
+                    }
+                }
+
+                res = true;
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return res;
+        }
+
+            private void UpdateRBValue()
+        {
+            if(ExcuteSQLNeedOnePoint(BbValue) && ExcuteSQLNeedOnePoint(RbValue))
+            {
+                SetTipValue(RbValue.MinValue - BbValue.MinValue);
+            }
+            else if(ExcuteSQLNeedTwoPoint(BbValue, RbValue))
             {
                 SetTipValue(RbValue.MinValue - BbValue.MinValue);
             }
@@ -193,6 +285,36 @@ namespace VirtualTeachCarola
             {
                 TipValue = String.Format("{0:0.##}", value);
             }
+        }
+
+        private void Record()
+        {
+            string sql = "insert into RecordTest (Red,Black,TestValue,TestTime,ValueType,TestID,IsLine) values ('"
+            + RbValue.BaseValue + "','"
+            + BbValue.BaseValue + "','"
+            + TipValue + "','"
+            + DateTime.Now.ToLocalTime().ToString() + "','"
+            + ValueType + "','"
+            + Manager.GetInstance().MMainForm.MUser.PracticID + "','"
+            + Car.IsLine
+            + "')";
+
+            AccessHelper.GetInstance().ExcuteSql(sql);
+
+            string eName = "";
+            if(Target != null && RbValue.BaseValue != "0" && BbValue.BaseValue != "0")
+            {
+                eName = (string)Target["LineName"] + " ";
+            }
+
+            sql = "insert into SubmitReport (ID,Oper,SubMit,TestID) values ('"
+                        + DateTime.Now.ToLocalTime().ToString() + "','"
+                        + "测量元件" + "','"
+                        + eName + "电压值:" + TipValue + "','"
+                        + Manager.GetInstance().MMainForm.MUser.PracticID
+                        + "')";
+
+            AccessHelper.GetInstance().ExcuteSql(sql);
         }
     }
 }

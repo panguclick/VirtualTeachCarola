@@ -48,6 +48,7 @@ namespace VirtualTeachCarola
             }
             else if (e.command == "ZL")
             {
+                Record();
             }
 
             ShowValue();

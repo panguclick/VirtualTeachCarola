@@ -18,8 +18,9 @@ namespace VirtualTeachCarola
         Car mCar = new Car();
         WYBDevice mWYBDvice = new WYBDevice();
         SBQDevice mSBQDvice = new SBQDevice();
+        private User mUser = new User();
 
-        User mUser = new User();
+        internal User MUser { get => mUser; set => mUser = value; }
 
         public MainForm()
         {
@@ -34,8 +35,6 @@ namespace VirtualTeachCarola
             LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\login.swf");
             LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
             LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mCar.FlashFlashCommand);
-            //loadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mWYBDvice.FlashFlashCommand);
-            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mSBQDvice.FlashFlashCommand);
 
             mWYBDvice.Car = mCar;
             mWYBDvice.FlashContrl = LoadFlash;
@@ -79,13 +78,17 @@ namespace VirtualTeachCarola
             {
                 ShowWYB();
             }
-            else if (e.command == "vt" && e.args == "0")
+            else if (e.command == "WYB" && e.args == "Close")
             {
                 CloseWYB();
             }
             else if (e.command.Equals("SB") && e.args.Equals("SBQ"))
             {
                 ShowSBQ();
+            }
+            else if (e.command == "SBQ" && e.args == "Close")
+            {
+                CloseSBQ();
             }
             else if (e.command == "SB" && e.args == "GZDQR")
             {
@@ -153,10 +156,10 @@ namespace VirtualTeachCarola
             mSBQDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM BYT");
 
             string[] sArray = Regex.Split(argv, ",", RegexOptions.IgnoreCase);
-            mUser.LoginID = sArray[0];
-            mUser.LoginPws = sArray[1];
+            MUser.LoginID = sArray[0];
+            MUser.LoginPws = sArray[1];
 
-            mUser.PracticID = mUser.LoginID + DateTime.Now.ToFileTimeUtc().ToString();
+            MUser.PracticID = MUser.LoginID + DateTime.Now.ToFileTimeUtc().ToString();
         }
 
         private void ShowSetting()
@@ -175,28 +178,33 @@ namespace VirtualTeachCarola
         {
             IT2Form iT2Form = new IT2Form();
             iT2Form.MCar = mCar;
-            iT2Form.MUser = mUser;
+            iT2Form.MUser = MUser;
             iT2Form.Show(this);
         }
 
         private void ShowWYB()
         {
+            CloseSBQ();
             mWYBDvice.TipValue = "";
+            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mWYBDvice.FlashFlashCommand);
         }
 
         private void CloseWYB()
         {
-
+            LoadFlash.FSCommand -= mWYBDvice.FlashFlashCommand;
         }
 
         private void ShowSBQ()
         {
+            CloseWYB();
             mSBQDvice.TipValue = "";
+            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mSBQDvice.FlashFlashCommand);
+
         }
 
         private void CloseSBQ()
         {
-
+            LoadFlash.FSCommand -= mSBQDvice.FlashFlashCommand;
         }
 
         private void ShowK600()
@@ -209,14 +217,14 @@ namespace VirtualTeachCarola
         private void ShowGZDQR()
         {
             GZDQRForm form = new GZDQRForm();
-            form.MUser = mUser;
+            form.MUser = MUser;
             form.ShowDialog(this);
         }
 
         private void ShowJCBG()
         {
             GZJLForm form = new GZJLForm();
-            form.MUser = mUser;
+            form.MUser = MUser;
             form.MCar = mCar;
             form.ShowDialog(this);
         }
@@ -233,7 +241,7 @@ namespace VirtualTeachCarola
 
             string sql = "insert into RecordOper (OPeration,TestID,OperTime,wgcz,Ename) values ('"
                         + rows[0]["Dist"] + "','"
-                        + mUser.PracticID + "','"
+                        + MUser.PracticID + "','"
                         + DateTime.Now.ToLocalTime().ToString() + "','"
                         + 1 + "','"
                         + rows[0]["Ename"]
@@ -247,7 +255,7 @@ namespace VirtualTeachCarola
                         + rows[0]["Ename"] + "','"
                         + rows[0]["Dist"] + "','"
                         + 1 + "','"
-                        + mUser.PracticID
+                        + MUser.PracticID
                         + "')";
 
             AccessHelper.GetInstance().ExcuteSql(sql);
@@ -263,7 +271,7 @@ namespace VirtualTeachCarola
             string sql = "insert into RecordOper (EID,OPeration,TestID,OperTime,Ename) values ('"
                         + eID + "','"
                         + oper + "','"
-                        + mUser.PracticID + "','"
+                        + MUser.PracticID + "','"
                         + DateTime.Now.ToLocalTime().ToString() + "','"
                         + rows[0]["Ename"]
                         + "')";
@@ -275,7 +283,7 @@ namespace VirtualTeachCarola
                         + DateTime.Now.ToLocalTime().ToString() + "','"
                         + rows[0]["Ename"] + "','"
                         + oper + "','"
-                        + mUser.PracticID
+                        + MUser.PracticID
                         + "')";
 
             AccessHelper.GetInstance().ExcuteSql(sql);

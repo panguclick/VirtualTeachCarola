@@ -20,6 +20,7 @@ namespace VirtualTeachCarola
         string tipValue = "";
         RBData rbValue = new RBData();
         RBData bbValue = new RBData();
+        DataRow target = null;
 
         public int ValueType { get => valueType; set => valueType = value; }
         public DataTable DataTable { get => dataTable; set => dataTable = value; }
@@ -28,6 +29,7 @@ namespace VirtualTeachCarola
         public RBData RbValue { get => rbValue; set => rbValue = value; }
         public RBData BbValue { get => bbValue; set => bbValue = value; }
         public string TipValue { get => tipValue; set => tipValue = value; }
+        public DataRow Target { get => target; set => target = value; }
         internal Car Car { get => car; set => car = value; }
     }
 }
