@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualTeachCarola.Base;
 
 namespace VirtualTeachCarola
 {
@@ -55,6 +56,7 @@ namespace VirtualTeachCarola
             }
             else if(e.command == "Login")
             {
+                Manager.GetInstance().UpdateSubject();
                 this.Close();
             }
         }
@@ -103,9 +105,12 @@ namespace VirtualTeachCarola
 
             for(int i = 0; i < rows.Length; i++)
             {
-                listBox1.Items.Add((string)rows[i]["DTC"]);
+                string value = (string)rows[i]["DTC"];
+                if (!listBox1.Items.Contains(value))
+                {
+                    listBox1.Items.Add(value);
+                }
             }
-
 
             SelectList2((string)rows[0]["DTC"]);
         }

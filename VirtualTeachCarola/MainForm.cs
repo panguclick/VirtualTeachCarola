@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using VirtualTeachCarola.Base;
 
 namespace VirtualTeachCarola
 {
@@ -160,6 +161,7 @@ namespace VirtualTeachCarola
             MUser.LoginPws = sArray[1];
 
             MUser.PracticID = MUser.LoginID + DateTime.Now.ToFileTimeUtc().ToString();
+            Manager.GetInstance().UpdateSubject();
         }
 
         private void ShowSetting()
