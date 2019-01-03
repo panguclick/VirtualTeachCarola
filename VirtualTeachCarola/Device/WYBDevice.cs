@@ -208,6 +208,21 @@ namespace VirtualTeachCarola
                     }
                 }
 
+                Boolean isGvalue = false;
+                if(Manager.GetInstance().HasSubject((string)rows[0]["Gzm"], ref isGvalue))
+                {
+                    if(isGvalue)
+                    {
+                        rData.MinValue = float.Parse((string)rows[0]["GValue"]);
+                    }
+                    else
+                    {
+                        rData.MinValue = float.Parse((string)rows[0]["DValue"]);
+                    }
+
+                    bData.MinValue = 0;
+                }
+
                 res = true;
             }
             catch (System.Exception e)

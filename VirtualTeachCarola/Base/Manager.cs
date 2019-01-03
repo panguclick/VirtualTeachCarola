@@ -45,7 +45,7 @@ namespace VirtualTeachCarola.Base
             SubjectRows = dataTable.Select("Choice = '选择'");
         }
 
-        public Boolean HasSubject(string argv, Boolean isGvalue)
+        public Boolean HasSubject(string argv, ref Boolean isGvalue)
         {
             string[] sArray = Regex.Split(argv, ",", RegexOptions.IgnoreCase);
 
@@ -55,7 +55,7 @@ namespace VirtualTeachCarola.Base
                 {
                     if(subjectRows[j]["GZID"].ToString() == sArray[i])
                     {
-                        if(subjectRows[j]["GZName"].ToString().Contains("断路"))
+                        if(subjectRows[j]["GZName"].ToString().Contains("短路"))
                         {
                             isGvalue = true;
                         }

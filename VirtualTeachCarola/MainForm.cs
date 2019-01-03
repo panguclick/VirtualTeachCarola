@@ -152,11 +152,24 @@ namespace VirtualTeachCarola
 
         private void Login(string argv)
         {
+
+            string[] sArray = Regex.Split(argv, ",", RegexOptions.IgnoreCase);
+
+            DataTable userDataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM Reg");
+            DataRow[] rows = userDataTable.Select("UserID='" + sArray[0] + "' And Pwd='" + sArray[1] + "'");
+
+            if(rows.Length == 0)
+            {
+                MessageBox.Show("用户名或密码错误", "虚拟仿真教学-卡罗拉", MessageBoxButtons.OK,
+                         MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                return;
+            }
+
+
             LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\index.swf");
             mWYBDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM CkValue");
             mSBQDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM BYT");
 
-            string[] sArray = Regex.Split(argv, ",", RegexOptions.IgnoreCase);
             MUser.LoginID = sArray[0];
             MUser.LoginPws = sArray[1];
 
