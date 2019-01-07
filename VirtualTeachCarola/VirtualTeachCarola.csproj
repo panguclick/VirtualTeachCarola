@@ -66,6 +66,12 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="INIFileParser, Version=2.5.2.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -80,8 +86,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessHelper.cs" />
+    <Compile Include="Base\Config.cs" />
     <Compile Include="Base\Manager.cs" />
     <Compile Include="Base\RBData.cs" />
+    <Compile Include="Base\Student.cs" />
     <Compile Include="Car.cs" />
     <Compile Include="Device\Device.cs" />
     <Compile Include="Device\SBQDevice.cs" />
@@ -98,6 +106,7 @@
     <Compile Include="GZJLForm.Designer.cs">
       <DependentUpon>GZJLForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Base\HttpStudent.cs" />
     <Compile Include="IForcePlayer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -176,6 +185,7 @@
     <EmbeddedResource Include="SettingForm.resx">
       <DependentUpon>SettingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -220,9 +230,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\Data\Surface\k600顶图.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

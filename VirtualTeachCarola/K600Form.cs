@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualTeachCarola.Base;
 
 namespace VirtualTeachCarola
 {
@@ -21,10 +22,6 @@ namespace VirtualTeachCarola
         bool beginMove = false;//初始化鼠标位置
         int currentXPosition;
         int currentYPosition;
-
-        private Car mCar = null;
-
-        internal Car MCar { get => mCar; set => mCar = value; }
 
         private void flashControl_Enter(object sender, EventArgs e)
         {
@@ -42,7 +39,7 @@ namespace VirtualTeachCarola
 
             flashControl.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\KT600.swf");
 
-            if (MCar.Power() == 2)
+            if (Manager.GetInstance().Car.Power() == 2)
             {
                 flashControl.SetVariable("enterBTN", "1");
             }

@@ -104,11 +104,11 @@ namespace VirtualTeachCarola
                 }
 
                 string sql = "CheckPoint1 = '" + data.BaseValue
-                    + "' AND Gearshift = '" + Car.Gearshift
-                    + "' AND accorrun = " + Car.Power()
-                    + " AND breaks = " + Car.BreakType
+                    + "' AND Gearshift = '" + Manager.GetInstance().Car.Gearshift
+                    + "' AND accorrun = " + Manager.GetInstance().Car.Power()
+                    + " AND breaks = " + Manager.GetInstance().Car.BreakType
                     + " AND ValueType = " + ValueType
-                    + " AND IsLine = " + Car.IsLine;
+                    + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
                 DataRow[] bbData = this.DataTable.Select(sql);
 
                 if (bbData.Length == 0)
@@ -151,22 +151,22 @@ namespace VirtualTeachCarola
 
                 string sql = "CheckPoint1 = '" + rData.BaseValue
                     + "' AND CheckPoint2 = '" + bData.BaseValue
-                    + "' AND Gearshift = '" + Car.Gearshift
-                    + "' AND accorrun = " + Car.Power()
-                    + " AND breaks = " + Car.BreakType
+                    + "' AND Gearshift = '" + Manager.GetInstance().Car.Gearshift
+                    + "' AND accorrun = " + Manager.GetInstance().Car.Power()
+                    + " AND breaks = " + Manager.GetInstance().Car.BreakType
                     + " AND ValueType = " + ValueType
-                    + " AND IsLine = " + Car.IsLine;
+                    + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
                 DataRow[] rows = this.DataTable.Select(sql);
 
                 if (rows.Length == 0)
                 {
                     sql = "CheckPoint1 = '" + bData.BaseValue
                         + "' AND CheckPoint2 = '" + rData.BaseValue
-                        + "' AND Gearshift = '" + Car.Gearshift
-                        + "' AND accorrun = " + Car.Power()
-                        + " AND breaks = " + Car.BreakType
+                        + "' AND Gearshift = '" + Manager.GetInstance().Car.Gearshift
+                        + "' AND accorrun = " + Manager.GetInstance().Car.Power()
+                        + " AND breaks = " + Manager.GetInstance().Car.BreakType
                         + " AND ValueType = " + ValueType
-                        + " AND IsLine = " + Car.IsLine;
+                        + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
                     rows = this.DataTable.Select(sql);
                     if (rows.Length == 0)
                     {
@@ -310,8 +310,8 @@ namespace VirtualTeachCarola
             + TipValue + "','"
             + DateTime.Now.ToLocalTime().ToString() + "','"
             + ValueType + "','"
-            + Manager.GetInstance().MMainForm.MUser.PracticID + "','"
-            + Car.IsLine
+            + Manager.GetInstance().User.PracticID + "','"
+            + Manager.GetInstance().Car.IsLine
             + "')";
 
             AccessHelper.GetInstance().ExcuteSql(sql);
@@ -326,7 +326,7 @@ namespace VirtualTeachCarola
                         + DateTime.Now.ToLocalTime().ToString() + "','"
                         + "测量元件" + "','"
                         + eName + "电压值:" + TipValue + "','"
-                        + Manager.GetInstance().MMainForm.MUser.PracticID
+                        + Manager.GetInstance().User.PracticID
                         + "')";
 
             AccessHelper.GetInstance().ExcuteSql(sql);

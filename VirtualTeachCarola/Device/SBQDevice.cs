@@ -78,8 +78,8 @@ namespace VirtualTeachCarola
 
                 string sql = "CkPoint1 = '" + rbData.BaseValue
                     + "' AND CkPoint2 = '" + bbData.BaseValue
-                    + "' AND Accorrun = " + Car.Power()
-                    + " AND IsLine = " + Car.IsLine;
+                    + "' AND Accorrun = " + Manager.GetInstance().Car.Power()
+                    + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
                 DataRow[] rowData = this.DataTable.Select(sql);
 
                 if (rowData.Length == 0)

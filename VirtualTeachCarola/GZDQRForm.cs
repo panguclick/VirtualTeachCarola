@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualTeachCarola.Base;
 using static System.Windows.Forms.ListViewItem;
 
 namespace VirtualTeachCarola
@@ -15,9 +16,6 @@ namespace VirtualTeachCarola
     public partial class GZDQRForm : Form
     {
         private Button mButton = new Button();
-        private User mUser = null;
-
-        internal User MUser { get => mUser; set => mUser = value; }
 
         public GZDQRForm()
         {
@@ -101,7 +99,7 @@ namespace VirtualTeachCarola
             {
                 string sql = "insert into RecordOper (OPeration,TestID,OperTime) values ('" 
                     + lvi.SubItems[3].Text + "','" 
-                    + mUser.PracticID + "','" 
+                    + Manager.GetInstance().User.PracticID + "','" 
                     + DateTime.Now.ToLocalTime().ToString() + "')";
 
                 AccessHelper.GetInstance().ExcuteSql(sql);

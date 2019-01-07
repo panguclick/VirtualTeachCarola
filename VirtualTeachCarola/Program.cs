@@ -19,6 +19,7 @@ namespace VirtualTeachCarola
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm mainForm = new MainForm();
             Manager.GetInstance().MMainForm = mainForm;
+            Manager.GetInstance().InitConfig();
             Application.Run(mainForm);
         }
     }

@@ -17,12 +17,6 @@ namespace VirtualTeachCarola
         int currentXPosition;
         int currentYPosition;
 
-        private Car mCar = null;
-        private User mUser = null;
-
-        internal Car MCar { get => mCar; set => mCar = value; }
-        internal User MUser { get => mUser; set => mUser = value; }
-
         public IT2Form()
         {
             InitializeComponent();
@@ -100,7 +94,7 @@ namespace VirtualTeachCarola
             Manager.GetInstance().RegisterEvent(new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand));
             axShockwaveFlash1.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\zdy.swf");
 
-            if (mCar.Power() == 2)
+            if (Manager.GetInstance().Car.Power() == 2)
             {
                 axShockwaveFlash1.SetVariable("enterBTN", "1");
             }
@@ -157,7 +151,7 @@ namespace VirtualTeachCarola
             }
             else if (e.command == "power")
             {
-                if (mCar.Power() == 2)
+                if (Manager.GetInstance().Car.Power() == 2)
                 {
                     axShockwaveFlash1.SetVariable("enterBTN", "1");
                 }
@@ -254,7 +248,7 @@ namespace VirtualTeachCarola
                         + id + "','"
                         + value + "','"
                         + DateTime.Now.ToLocalTime().ToString() + "','"
-                        + mUser.PracticID
+                        + Manager.GetInstance().User.PracticID
                         + "')";
 
             AccessHelper.GetInstance().ExcuteSql(sql);
@@ -264,7 +258,7 @@ namespace VirtualTeachCarola
                         + DateTime.Now.ToLocalTime().ToString() + "','"
                         + "诊断仪记录:" + "','"
                         + id + ":" + value + "','"
-                        + MUser.PracticID
+                        + Manager.GetInstance().User.PracticID
                         + "')";
 
             AccessHelper.GetInstance().ExcuteSql(sql);

@@ -13,7 +13,6 @@ namespace VirtualTeachCarola
     internal class Device
     {
         DataTable dataTable = null;
-        Car car = null;
         int valueType = 0;
         System.Threading.Timer threadTime;
         AxShockwaveFlashObjects.AxShockwaveFlash flashContrl = null;
@@ -30,6 +29,5 @@ namespace VirtualTeachCarola
         public RBData BbValue { get => bbValue; set => bbValue = value; }
         public string TipValue { get => tipValue; set => tipValue = value; }
         public DataRow Target { get => target; set => target = value; }
-        internal Car Car { get => car; set => car = value; }
     }
 }

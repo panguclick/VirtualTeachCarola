@@ -1,4 +1,5 @@
 ﻿using AxShockwaveFlashObjects;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,12 +17,8 @@ namespace VirtualTeachCarola
 {
     public partial class MainForm : Form
     {
-        Car mCar = new Car();
         WYBDevice mWYBDvice = new WYBDevice();
         SBQDevice mSBQDvice = new SBQDevice();
-        private User mUser = new User();
-
-        internal User MUser { get => mUser; set => mUser = value; }
 
         public MainForm()
         {
@@ -35,12 +32,9 @@ namespace VirtualTeachCarola
             LoadFlash.Dock = DockStyle.Fill;
             LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\login.swf");
             LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
-            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(mCar.FlashFlashCommand);
-
-            mWYBDvice.Car = mCar;
+            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(Manager.GetInstance().Car.FlashFlashCommand);
             mWYBDvice.FlashContrl = LoadFlash;
 
-            mSBQDvice.Car = mCar;
             mSBQDvice.FlashContrl = LoadFlash;
         }
 
@@ -101,9 +95,9 @@ namespace VirtualTeachCarola
             }
             else if (e.command == "cpxx" && e.args == "zl")
             {
-                mCar.CarType = "TV802GL";
-                mCar.CarCode = "LFMAPE2G480036594";
-                mCar.EnginType = "2ZR";
+                Manager.GetInstance().Car.CarType = "TV802GL";
+                Manager.GetInstance().Car.CarCode = "LFMAPE2G480036594";
+                Manager.GetInstance().Car.EnginType = "2ZR";
             }
             else if (e.command == "WGCZ")
             {
@@ -116,6 +110,10 @@ namespace VirtualTeachCarola
                 || e.args == "JC")
             {
                 ExcuteOper(e.args, e.command);
+            }
+            else if(e.command == "kaohe" || e.command == "shixun")
+            {
+                Manager.GetInstance().User.Mode = e.command;
             }
 
             ///////////////////////////日志/////////////////////////////////////
@@ -141,40 +139,93 @@ namespace VirtualTeachCarola
 
         private void QuitApp()
         {
-            LoadFlash.FSCommand -= FlashFlashCommand;
+            if(Manager.GetInstance().User.Mode == "shixun")
+            {
+                LoadFlash.FSCommand -= FlashFlashCommand;
 
-            SetGZForm form = new SetGZForm();
-            form.ShowDialog(this);
+                SetGZForm form = new SetGZForm();
+                form.ShowDialog(this);
 
-            LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
+                LoadFlash.FSCommand += new _IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
+            }
+            else
+            {
+                Exit();
+            }
+
 
         }
 
         private void Login(string argv)
         {
-
+            //参数p
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
             string[] sArray = Regex.Split(argv, ",", RegexOptions.IgnoreCase);
+            parameters.Add("username", sArray[0]);
+            parameters.Add("password", sArray[1]);
 
-            DataTable userDataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM Reg");
-            DataRow[] rows = userDataTable.Select("UserID='" + sArray[0] + "' And Pwd='" + sArray[1] + "'");
+            //http请求
+            System.Net.HttpWebResponse res = Manager.CreatePostHttpResponse(Manager.GetInstance().Config.Http + "/user/stuLogin", parameters,"POST", 3000, null, null);
+            String msg = "";
 
-            if(rows.Length == 0)
+            if (res == null)
+            {
+                Console.WriteLine("网络服务异常");
+            }
+            else
+            {
+                //获取返回数据转为字符串
+                msg = Manager.GetResponseString(res);
+                Manager.GetInstance().User.HttpStudent = JsonConvert.DeserializeObject<HttpStudent>(msg);
+            }
+
+            if(msg.Length == 0 || Manager.GetInstance().User.HttpStudent.Code == 0)
             {
                 MessageBox.Show("用户名或密码错误", "虚拟仿真教学-卡罗拉", MessageBoxButtons.OK,
                          MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
                 return;
             }
 
+            Manager.GetInstance().CleanSubject();
+
+            if (Manager.GetInstance().User.Mode == "kaohe")
+            {
+                res = Manager.CreatePostHttpResponse(Manager.GetInstance().Config.Http + "/external/gzList?stuId=" + Manager.GetInstance().User.HttpStudent.Data.StuId, null, "GET", 3000, null, null);
+                msg = Manager.GetResponseString(res);
+
+                if(msg.Length == 0)
+                {
+                    MessageBox.Show("你还不能考试哦！", "虚拟仿真教学-卡罗拉", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                    return;
+                }
+
+                Manager.GetInstance().InitSubject(msg);
+            }
 
             LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\index.swf");
             mWYBDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM CkValue");
             mSBQDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM BYT");
 
-            MUser.LoginID = sArray[0];
-            MUser.LoginPws = sArray[1];
+            Manager.GetInstance().User.LoginID = sArray[0];
+            Manager.GetInstance().User.LoginPws = sArray[1];
 
-            MUser.PracticID = MUser.LoginID + DateTime.Now.ToFileTimeUtc().ToString();
+            Manager.GetInstance().User.PracticID = Manager.GetInstance().User.LoginID + DateTime.Now.ToFileTimeUtc().ToString();
             Manager.GetInstance().UpdateSubject();
+
+            LoadFlash.SetVariable("Temp", Manager.GetInstance().Config.Temp);
+            LoadFlash.SetVariable("Pressure", Manager.GetInstance().Config.Pressure);
+
+            if(Manager.GetInstance().User.Mode == "kaohe")
+            {
+                LoadFlash.SetVariable("LoginInf", Manager.GetInstance().User.HttpStudent.Data.StuId
+                    + "," + Manager.GetInstance().User.HttpStudent.Data.StuName
+                    + "," + DateTime.Now.ToLocalTime().ToString()
+                    + "," + Manager.GetInstance().SubjectRows.Length
+                    + "," + Manager.GetInstance().User.HttpStudent.Data.ClassNum
+                    );
+            }
+
         }
 
         private void ShowSetting()
@@ -192,8 +243,6 @@ namespace VirtualTeachCarola
         private void ShowZDY()
         {
             IT2Form iT2Form = new IT2Form();
-            iT2Form.MCar = mCar;
-            iT2Form.MUser = MUser;
             iT2Form.Show(this);
         }
 
@@ -225,22 +274,18 @@ namespace VirtualTeachCarola
         private void ShowK600()
         {
             K600Form k600Form = new K600Form();
-            k600Form.MCar = mCar;
             k600Form.Show(this);
         }
 
         private void ShowGZDQR()
         {
             GZDQRForm form = new GZDQRForm();
-            form.MUser = MUser;
             form.ShowDialog(this);
         }
 
         private void ShowJCBG()
         {
             GZJLForm form = new GZJLForm();
-            form.MUser = MUser;
-            form.MCar = mCar;
             form.ShowDialog(this);
         }
 
@@ -256,7 +301,7 @@ namespace VirtualTeachCarola
 
             string sql = "insert into RecordOper (OPeration,TestID,OperTime,wgcz,Ename) values ('"
                         + rows[0]["Dist"] + "','"
-                        + MUser.PracticID + "','"
+                        + Manager.GetInstance().User.PracticID + "','"
                         + DateTime.Now.ToLocalTime().ToString() + "','"
                         + 1 + "','"
                         + rows[0]["Ename"]
@@ -270,7 +315,7 @@ namespace VirtualTeachCarola
                         + rows[0]["Ename"] + "','"
                         + rows[0]["Dist"] + "','"
                         + 1 + "','"
-                        + MUser.PracticID
+                        + Manager.GetInstance().User.PracticID
                         + "')";
 
             AccessHelper.GetInstance().ExcuteSql(sql);
@@ -286,7 +331,7 @@ namespace VirtualTeachCarola
             string sql = "insert into RecordOper (EID,OPeration,TestID,OperTime,Ename) values ('"
                         + eID + "','"
                         + oper + "','"
-                        + MUser.PracticID + "','"
+                        + Manager.GetInstance().User.PracticID + "','"
                         + DateTime.Now.ToLocalTime().ToString() + "','"
                         + rows[0]["Ename"]
                         + "')";
@@ -298,7 +343,7 @@ namespace VirtualTeachCarola
                         + DateTime.Now.ToLocalTime().ToString() + "','"
                         + rows[0]["Ename"] + "','"
                         + oper + "','"
-                        + MUser.PracticID
+                        + Manager.GetInstance().User.PracticID
                         + "')";
 
             AccessHelper.GetInstance().ExcuteSql(sql);

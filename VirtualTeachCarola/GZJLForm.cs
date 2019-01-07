@@ -7,21 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualTeachCarola.Base;
 
 namespace VirtualTeachCarola
 {
     public partial class GZJLForm : Form
     {
-        private User mUser = null;
-        private Car mCar = null;
-
         public GZJLForm()
         {
             InitializeComponent();
         }
-
-        internal User MUser { get => mUser; set => mUser = value; }
-        internal Car MCar { get => mCar; set => mCar = value; }
 
         private void axShockwaveFlash1_Enter(object sender, EventArgs e)
         {
@@ -45,16 +40,16 @@ namespace VirtualTeachCarola
 
         private void Init()
         {
-            labelXueHao.Text = mUser.LoginID;
-            labelName.Text = mUser.LoginName;
-            labelSex.Text = mUser.Sex;
-            labelClass.Text = mUser.ClassName;
+            labelXueHao.Text = Manager.GetInstance().User.LoginID;
+            labelName.Text = Manager.GetInstance().User.LoginName;
+            labelSex.Text = Manager.GetInstance().User.HttpStudent.Data.GetSex();
+            labelClass.Text = Manager.GetInstance().User.HttpStudent.Data.ClassNum;
             labelDate.Text = DateTime.Now.ToString("Y");
-            labelCarType.Text = mCar.CarType;
-            labelCarCode.Text = mCar.CarCode;
-            labelEnginType.Text = mCar.EnginType;
+            labelCarType.Text = Manager.GetInstance().Car.CarType;
+            labelCarCode.Text = Manager.GetInstance().Car.CarCode;
+            labelEnginType.Text = Manager.GetInstance().Car.EnginType;
 
-            DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM SubmitReport WHERE TestID = '"+ mUser.PracticID +"' ORDER BY ID");
+            DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM SubmitReport WHERE TestID = '"+ Manager.GetInstance().User.PracticID +"' ORDER BY ID");
             DataRow[] rows = dataTable.Select();
 
             for(int i = 0; i < rows.Length; i++)
