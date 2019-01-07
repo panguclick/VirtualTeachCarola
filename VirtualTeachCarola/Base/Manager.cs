@@ -32,12 +32,14 @@ namespace VirtualTeachCarola.Base
         private Config config = new Config();
         private User user = new User();
         private Car car = new Car();
+        private List<int> selectSubjects = new List<int>();
 
         public MainForm MMainForm { get => mMainForm; set => mMainForm = value; }
         public DataRow[] SubjectRows { get => subjectRows; set => subjectRows = value; }
         internal Config Config { get => config; set => config = value; }
         internal User User { get => user; set => user = value; }
         internal Car Car { get => car; set => car = value; }
+        public List<int> SelectSubjects { get => selectSubjects; set => selectSubjects = value; }
 
         public void RegisterEvent(_IShockwaveFlashEvents_FSCommandEventHandler eventFun)
         {

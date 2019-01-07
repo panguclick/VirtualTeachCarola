@@ -62,17 +62,14 @@ namespace VirtualTeachCarola
                 lvi.SubItems.Add((string)dataRows[i]["EName"]);
                 lvi.SubItems.Add((string)dataRows[i]["GZName"]);
                 lvi.SubItems.Add((string)dataRows[i]["XF"]);
+                lvi.Tag = (int)dataRows[i]["GZID"];
+
+                if (Manager.GetInstance().SelectSubjects.Contains((int)dataRows[i]["GZID"]))
+                {
+                    lvi.Checked = true;
+                }
+
                 this.listView1.Items.Add(lvi);
-
-                //ListViewItem[] lvs = new ListViewItem[1];
-                //lvs[0] = new ListViewItem(new string[] { "", (string)dataRows[i]["DTID"], (string)dataRows[i]["EName"], (string)dataRows[i]["GZName"], ""});
-                //this.listView1.Items.AddRange(lvs);
-
-                //mButton.Visible = true;
-                //mButton.Text = (string)dataRows[i]["XF"];
-                //mButton.Click += this.button_Click;
-                //mButton.Size = new Size(this.listView1.Items[i].SubItems[4].Bounds.Width, this.listView1.Items[i].SubItems[4].Bounds.Height);
-                //listView1.Controls.Add(mButton);
             }
 
             this.listView1.EndUpdate();  //结束数据处理，UI界面一次性绘制。
@@ -97,12 +94,29 @@ namespace VirtualTeachCarola
 
             if(lvi.Checked)
             {
+
+                if(Manager.GetInstance().SelectSubjects.Count >= Manager.GetInstance().SubjectRows.Length)
+                {
+                    lvi.Checked = false;
+
+                    MessageBox.Show("答案个数已超过故障数", "虚拟仿真教学-卡罗拉", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                    return;
+                }
+
                 string sql = "insert into RecordOper (OPeration,TestID,OperTime) values ('" 
                     + lvi.SubItems[3].Text + "','" 
                     + Manager.GetInstance().User.PracticID + "','" 
                     + DateTime.Now.ToLocalTime().ToString() + "')";
 
                 AccessHelper.GetInstance().ExcuteSql(sql);
+
+                Manager.GetInstance().SelectSubjects.Add((int)lvi.Tag);
+
+            }
+            else
+            {
+                Manager.GetInstance().SelectSubjects.Remove((int)lvi.Tag);
             }
         }
     }
