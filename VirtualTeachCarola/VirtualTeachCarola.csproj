@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="AccessHelper.cs" />
     <Compile Include="Base\Config.cs" />
+    <Compile Include="Base\HttpExam.cs" />
     <Compile Include="Base\Manager.cs" />
     <Compile Include="Base\RBData.cs" />
     <Compile Include="Base\Student.cs" />

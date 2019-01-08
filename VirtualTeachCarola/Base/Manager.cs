@@ -152,6 +152,11 @@ namespace VirtualTeachCarola.Base
         /// </summary>
         public static string GetResponseString(HttpWebResponse webresponse)
         {
+            if(webresponse == null)
+            {
+                return "";
+            }
+
             using (Stream s = webresponse.GetResponseStream())
             {
                 StreamReader reader = new StreamReader(s, Encoding.UTF8);

@@ -40,8 +40,8 @@ namespace VirtualTeachCarola
 
         private void Init()
         {
-            labelXueHao.Text = Manager.GetInstance().User.LoginID;
-            labelName.Text = Manager.GetInstance().User.LoginName;
+            labelXueHao.Text = Manager.GetInstance().User.HttpStudent.Data.StuId;
+            labelName.Text = Manager.GetInstance().User.HttpStudent.Data.StuName;
             labelSex.Text = Manager.GetInstance().User.HttpStudent.Data.GetSex();
             labelClass.Text = Manager.GetInstance().User.HttpStudent.Data.ClassNum;
             labelDate.Text = DateTime.Now.ToString("Y");
