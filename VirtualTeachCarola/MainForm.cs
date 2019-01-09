@@ -2,15 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 using VirtualTeachCarola.Base;
 
 namespace VirtualTeachCarola
@@ -38,7 +32,7 @@ namespace VirtualTeachCarola
             mSBQDvice.FlashContrl = LoadFlash;
         }
 
-        public void FlashFlashCommand(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEvent e)
+        public void FlashFlashCommand(object sender, _IShockwaveFlashEvents_FSCommandEvent e)
         {
             // We only want to react if we got our command
             if (e.command == "shezhijiemian")
@@ -136,7 +130,7 @@ namespace VirtualTeachCarola
             if (dr == DialogResult.Yes)
             {
                 AccessHelper.GetInstance().Release();
-                System.Environment.Exit(0);
+                Environment.Exit(0);
             }
 
         }
@@ -165,12 +159,14 @@ namespace VirtualTeachCarola
             //参数p
             IDictionary<string, string> parameters = new Dictionary<string, string>();
             string[] sArray = Regex.Split(argv, ",", RegexOptions.IgnoreCase);
-            parameters.Add("username", sArray[0]);
+            parameters.Add("stuId", sArray[0]);
             parameters.Add("password", sArray[1]);
 
             //http请求
-            System.Net.HttpWebResponse res = Manager.CreatePostHttpResponse(Manager.GetInstance().Config.Http + "/user/stuLogin", parameters,"POST", 3000, null, null);
-            String msg = "";
+            string json = JsonConvert.SerializeObject(parameters);
+
+            System.Net.HttpWebResponse res = Manager.CreatePostHttpResponse(Manager.GetInstance().Config.Http + "/user/stuLogin", json, "POST", 3000, null, null);
+            string msg = "";
 
             if (res == null)
             {
@@ -194,7 +190,7 @@ namespace VirtualTeachCarola
 
             if (Manager.GetInstance().User.Mode == "kaohe")
             {
-                res = Manager.CreatePostHttpResponse(Manager.GetInstance().Config.Http + "/external/gzList?stuId=" + Manager.GetInstance().User.HttpStudent.Data.Id, null, "GET", 3000, null, null);
+                res = Manager.CreatePostHttpResponse(Manager.GetInstance().Config.Http + "/external/gzList?stuId=" + Manager.GetInstance().User.HttpStudent.Data.Id, "", "GET", 3000, null, null);
                 msg = Manager.GetResponseString(res);
 
                 if(msg.Length == 0)
@@ -405,14 +401,27 @@ namespace VirtualTeachCarola
             if(Manager.GetInstance().User.Mode == "kaohe")
             {
                 HttpSubmitReport httpSubmitReport = new HttpSubmitReport();
-                httpSubmitReport.StuId = Manager.GetInstance().User.HttpStudent.Data.StuId;
-                httpSubmitReport.TestId = Manager.GetInstance().User.HttpExam.TId;
-                httpSubmitReport.Answers = Manager.GetInstance().SelectSubjects;
-                httpSubmitReport.WgczCount = Manager.GetInstance().User.WgczCount;
+                httpSubmitReport.stuId = int.Parse(Manager.GetInstance().User.HttpStudent.Data.StuId);
+                httpSubmitReport.testId = Manager.GetInstance().User.HttpExam.TId;
+                httpSubmitReport.answers = Manager.GetInstance().SelectSubjects;
+                httpSubmitReport.wgczCount = Manager.GetInstance().User.WgczCount;
 
-                httpSubmitReport.Contents = Manager.GetInstance().GetSubmitReport();
+                httpSubmitReport.contents = Manager.GetInstance().GetSubmitReport();
 
                 string json = JsonConvert.SerializeObject(httpSubmitReport);
+
+                System.Net.HttpWebResponse res = Manager.CreatePostHttpResponse(Manager.GetInstance().Config.Http + "/external/sendScore", json, "POST", 3000, null, null);
+                string msg = "";
+
+                if (res == null)
+                {
+                    Console.WriteLine("网络服务异常");
+                }
+                else
+                {
+                    //获取返回数据转为字符串
+                    msg = Manager.GetResponseString(res);
+                }
             }
         }
     }

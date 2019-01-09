@@ -65,8 +65,7 @@
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Mouse_DoubleClick);
+            this.listView1.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.ItemChecked);
             // 
             // columnHeader1
             // 

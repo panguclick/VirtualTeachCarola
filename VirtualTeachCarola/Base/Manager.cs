@@ -90,7 +90,7 @@ namespace VirtualTeachCarola.Base
 
         /// 创建POST方式的HTTP请求  
         public static HttpWebResponse CreatePostHttpResponse(string url, 
-            IDictionary<string, string> parameters,
+            string json,
             string method,
             int timeout, 
             string userAgent, 
@@ -125,9 +125,8 @@ namespace VirtualTeachCarola.Base
             try
             {
                 //发送POST数据  
-                if (!(parameters == null || parameters.Count == 0))
+                if (json.Length > 0)
                 {
-                    string json = JsonConvert.SerializeObject(parameters);
                     byte[] data = Encoding.ASCII.GetBytes(json);
                     using (Stream stream = request.GetRequestStream())
                     {

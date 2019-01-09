@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using VirtualTeachCarola.Base;
-using static System.Windows.Forms.ListViewItem;
 
 namespace VirtualTeachCarola
 {
 
     public partial class GZDQRForm : Form
     {
-        private Button mButton = new Button();
-
         public GZDQRForm()
         {
             InitializeComponent();
@@ -29,7 +20,6 @@ namespace VirtualTeachCarola
             axShockwaveFlash1.Dock = DockStyle.Fill;
 
             axShockwaveFlash1.FSCommand += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEventHandler(FlashFlashCommand);
-            axShockwaveFlash1.FlashCall += new AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEventHandler(FlashFlashCall);
 
             axShockwaveFlash1.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\gzdqr.swf");
 
@@ -43,7 +33,7 @@ namespace VirtualTeachCarola
 
             if(e.command == "quit")
             {
-                this.Close();
+                Close();
             }
         }
 
@@ -52,7 +42,7 @@ namespace VirtualTeachCarola
             DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM GzInfo ORDER BY GZID");
             DataRow[] dataRows = dataTable.Select();
 
-            this.listView1.BeginUpdate();   //数据更新，UI暂时挂起，直到EndUpdate绘制控件，可以有效避免闪烁并大大提高加载速度  
+            listView1.BeginUpdate();   //数据更新，UI暂时挂起，直到EndUpdate绘制控件，可以有效避免闪烁并大大提高加载速度  
 
             for (int i = 0; i < dataRows.Length; i++)   //添加10行数据  
             {
@@ -69,33 +59,20 @@ namespace VirtualTeachCarola
                     lvi.Checked = true;
                 }
 
-                this.listView1.Items.Add(lvi);
+                listView1.Items.Add(lvi);
             }
 
-            this.listView1.EndUpdate();  //结束数据处理，UI界面一次性绘制。
+            listView1.EndUpdate();  //结束数据处理，UI界面一次性绘制。
         }
 
-        void FlashFlashCall(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEvent e)
+        private void ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-        }
+            ListViewItem lvi = e.Item;
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void button_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Mouse_DoubleClick(object sender, MouseEventArgs e)
-        {
-            ListViewItem lvi = listView1.GetItemAt(e.X, e.Y);
-
-            if(lvi.Checked)
+            if (lvi.Checked)
             {
 
-                if(Manager.GetInstance().SelectSubjects.Count >= Manager.GetInstance().SubjectRows.Length)
+                if (Manager.GetInstance().SelectSubjects.Count >= Manager.GetInstance().SubjectRows.Length)
                 {
                     lvi.Checked = false;
 
@@ -104,9 +81,9 @@ namespace VirtualTeachCarola
                     return;
                 }
 
-                string sql = "insert into RecordOper (OPeration,TestID,OperTime) values ('" 
-                    + lvi.SubItems[3].Text + "','" 
-                    + Manager.GetInstance().User.PracticID + "','" 
+                string sql = "insert into RecordOper (OPeration,TestID,OperTime) values ('"
+                    + lvi.SubItems[3].Text + "','"
+                    + Manager.GetInstance().User.PracticID + "','"
                     + DateTime.Now.ToLocalTime().ToString() + "')";
 
                 AccessHelper.GetInstance().ExcuteSql(sql);
