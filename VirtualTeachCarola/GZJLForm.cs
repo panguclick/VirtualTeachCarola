@@ -49,34 +49,11 @@ namespace VirtualTeachCarola
             labelCarCode.Text = Manager.GetInstance().Car.CarCode;
             labelEnginType.Text = Manager.GetInstance().Car.EnginType;
 
-            DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM SubmitReport WHERE TestID = '"+ Manager.GetInstance().User.PracticID +"' ORDER BY ID");
-            DataRow[] rows = dataTable.Select();
-
-            for(int i = 0; i < rows.Length; i++)
+            List<string> reports = Manager.GetInstance().GetSubmitReport();
+            
+            for(int i = 0; i < reports.Count; i++)
             {
-                string content = ((DateTime)rows[i]["ID"]).ToString("d");
-
-                if (rows[i]["wgcz"] != null && rows[i]["wgcz"].ToString() == "1")
-                {
-                    content += " 违规操作:";
-                }
-
-                if (rows[i]["Ename"].ToString() != "")
-                {
-                    content += " " + rows[i]["Ename"];
-                }
-
-                if (rows[i]["Oper"].ToString() != "")
-                {
-                    content += " " + rows[i]["Oper"];
-                }
-
-                if (rows[i]["SubMit"].ToString() != "")
-                {
-                    content += " " + rows[i]["SubMit"];
-                }
-
-                listBox1.Items.Add(content);
+                listBox1.Items.Add(reports[i]);
             }
         }
 

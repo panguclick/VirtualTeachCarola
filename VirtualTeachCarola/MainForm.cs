@@ -307,6 +307,8 @@ namespace VirtualTeachCarola
                 return;
             }
 
+            Manager.GetInstance().User.AddWgczCount();
+
             DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM WGCZ WHERE ID =" + id);
             DataRow[] rows = dataTable.Select();
 
@@ -400,7 +402,18 @@ namespace VirtualTeachCarola
 
         private void SubmitAnswer()
         {
+            if(Manager.GetInstance().User.Mode == "kaohe")
+            {
+                HttpSubmitReport httpSubmitReport = new HttpSubmitReport();
+                httpSubmitReport.StuId = Manager.GetInstance().User.HttpStudent.Data.StuId;
+                httpSubmitReport.TestId = Manager.GetInstance().User.HttpExam.TId;
+                httpSubmitReport.Answers = Manager.GetInstance().SelectSubjects;
+                httpSubmitReport.WgczCount = Manager.GetInstance().User.WgczCount;
 
+                httpSubmitReport.Contents = Manager.GetInstance().GetSubmitReport();
+
+                string json = JsonConvert.SerializeObject(httpSubmitReport);
+            }
         }
     }
 }

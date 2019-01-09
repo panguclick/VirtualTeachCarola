@@ -173,5 +173,42 @@ namespace VirtualTeachCarola.Base
             Config.Temp = data["Setup"]["Temp"];
             Config.Pressure = data["Setup"]["Pressure"];
         }
+
+        public List<string> GetSubmitReport()
+        {
+            DataTable dataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM SubmitReport WHERE TestID = '" + Manager.GetInstance().User.PracticID + "' ORDER BY ID");
+            DataRow[] rows = dataTable.Select();
+
+            List<string> res = new List<string>();
+
+            for (int i = 0; i < rows.Length; i++)
+            {
+                string content = ((DateTime)rows[i]["ID"]).ToString("d");
+
+                if (rows[i]["wgcz"] != null && rows[i]["wgcz"].ToString() == "1")
+                {
+                    content += " 违规操作:";
+                }
+
+                if (rows[i]["Ename"].ToString() != "")
+                {
+                    content += " " + rows[i]["Ename"];
+                }
+
+                if (rows[i]["Oper"].ToString() != "")
+                {
+                    content += " " + rows[i]["Oper"];
+                }
+
+                if (rows[i]["SubMit"].ToString() != "")
+                {
+                    content += " " + rows[i]["SubMit"];
+                }
+
+                res.Add(content);
+            }
+
+            return res;
+        }
     }
 }
