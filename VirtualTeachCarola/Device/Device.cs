@@ -20,6 +20,7 @@ namespace VirtualTeachCarola
         RBData rbValue = new RBData();
         RBData bbValue = new RBData();
         DataRow target = null;
+        bool canYouMen = false;
 
         public int ValueType { get => valueType; set => valueType = value; }
         public DataTable DataTable { get => dataTable; set => dataTable = value; }
@@ -29,5 +30,6 @@ namespace VirtualTeachCarola
         public RBData BbValue { get => bbValue; set => bbValue = value; }
         public string TipValue { get => tipValue; set => tipValue = value; }
         public DataRow Target { get => target; set => target = value; }
+        public bool CanYouMen { get => canYouMen; set => canYouMen = value; }
     }
 }

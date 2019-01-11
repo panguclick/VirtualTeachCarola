@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using VirtualTeachCarola.Base;
 
 namespace VirtualTeachCarola
@@ -109,7 +105,7 @@ namespace VirtualTeachCarola
                     + " AND breaks = " + Manager.GetInstance().Car.BreakType
                     + " AND ValueType = " + ValueType
                     + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
-                DataRow[] bbData = this.DataTable.Select(sql);
+                DataRow[] bbData = DataTable.Select(sql);
 
                 if (bbData.Length == 0)
                 {
@@ -131,7 +127,7 @@ namespace VirtualTeachCarola
 
                 res = true;
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
@@ -156,7 +152,7 @@ namespace VirtualTeachCarola
                     + " AND breaks = " + Manager.GetInstance().Car.BreakType
                     + " AND ValueType = " + ValueType
                     + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
-                DataRow[] rows = this.DataTable.Select(sql);
+                DataRow[] rows = DataTable.Select(sql);
 
                 if (rows.Length == 0)
                 {
@@ -167,7 +163,7 @@ namespace VirtualTeachCarola
                         + " AND breaks = " + Manager.GetInstance().Car.BreakType
                         + " AND ValueType = " + ValueType
                         + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
-                    rows = this.DataTable.Select(sql);
+                    rows = DataTable.Select(sql);
                     if (rows.Length == 0)
                     {
                         return false;
@@ -184,6 +180,7 @@ namespace VirtualTeachCarola
                 if(isMax)
                 {
                     rData.MinValue = float.Parse(sArray[0]);
+                    CanYouMen = true;
 
                     if (sArray.Length > 1)
                     {
@@ -208,7 +205,7 @@ namespace VirtualTeachCarola
                     }
                 }
 
-                Boolean isGvalue = false;
+                bool isGvalue = false;
                 if(Manager.GetInstance().HasSubject((string)rows[0]["Gzm"], ref isGvalue))
                 {
                     if(isGvalue)
@@ -225,22 +222,30 @@ namespace VirtualTeachCarola
 
                 res = true;
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
             return res;
         }
 
-            private void UpdateRBValue()
+        private void UpdateRBValue()
         {
-            if(ExcuteSQLNeedOnePoint(BbValue) && ExcuteSQLNeedOnePoint(RbValue))
+            CanYouMen = false;
+
+            if (ExcuteSQLNeedOnePoint(BbValue) && ExcuteSQLNeedOnePoint(RbValue))
             {
                 SetTipValue(RbValue.MinValue - BbValue.MinValue);
             }
             else if(ExcuteSQLNeedTwoPoint(BbValue, RbValue))
             {
-                SetTipValue(RbValue.MinValue - BbValue.MinValue);
+                float value = RbValue.MinValue - BbValue.MinValue;
+                if (CanYouMen == true)
+                {
+                    value = RbValue.MinValue + Manager.GetInstance().Car.Speed * (RbValue.MaxValue - RbValue.MinValue) / 100;
+                }
+
+                SetTipValue(value);
             }
             else
             {
@@ -255,7 +260,7 @@ namespace VirtualTeachCarola
                 Random ran = new Random();
                 int n = ran.Next(-1, 2);
                 float v = float.Parse(TipValue) + n * 0.01f;
-                FlashContrl.SetVariable("WYB", String.Format("{0:0.##}", v));
+                FlashContrl.SetVariable("WYB", string.Format("{0:0.##}", v));
             }
         }
 
@@ -268,7 +273,7 @@ namespace VirtualTeachCarola
         {
             if(ThreadTime == null)
             {
-                ThreadTime = new System.Threading.Timer(ThreadTimerMethod, null, 0, 1000);
+                ThreadTime = new Timer(ThreadTimerMethod, null, 0, 1000);
             }
         }
 
@@ -283,7 +288,6 @@ namespace VirtualTeachCarola
 
         private void SetTipValue(float value)
         {
-      
             if (ValueType == 0 && value == 0)
             {
                 TipValue = "";
@@ -298,7 +302,7 @@ namespace VirtualTeachCarola
             }
             else
             {
-                TipValue = String.Format("{0:0.##}", value);
+                TipValue = string.Format("{0:0.##}", value);
             }
         }
 
