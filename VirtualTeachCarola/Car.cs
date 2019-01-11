@@ -49,16 +49,13 @@ namespace VirtualTeachCarola
             {
                 gearshift = e.args;
             }
-            else if(e.command == "S")
+            if (e.args == "ZXJC")
             {
-                if(e.args == "ZXJC")
-                {
-                    isLine = 1;
-                }
-                else if(e.args == "JC")
-                {
-                    isLine = 0;
-                }
+                isLine = 1;
+            }
+            else if (e.args == "JC")
+            {
+                isLine = 0;
             }
         }
 

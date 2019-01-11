@@ -206,7 +206,8 @@ namespace VirtualTeachCarola
                 }
 
                 bool isGvalue = false;
-                if(Manager.GetInstance().HasSubject((string)rows[0]["Gzm"], ref isGvalue))
+
+                if(rows[0]["Gzm"].GetType().Name != "DBNull" && Manager.GetInstance().HasSubject((string)rows[0]["Gzm"], ref isGvalue))
                 {
                     if(isGvalue)
                     {
