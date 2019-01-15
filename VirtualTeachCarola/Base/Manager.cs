@@ -34,12 +34,17 @@ namespace VirtualTeachCarola.Base
         private Car car = new Car();
         private List<int> selectSubjects = new List<int>();
 
+        private DataTable ckvalueDataTbale = null;
+        private DataTable bytDataTable = null;
+
         public MainForm MMainForm { get => mMainForm; set => mMainForm = value; }
         public DataRow[] SubjectRows { get => subjectRows; set => subjectRows = value; }
         internal Config Config { get => config; set => config = value; }
         internal User User { get => user; set => user = value; }
         internal Car Car { get => car; set => car = value; }
         public List<int> SelectSubjects { get => selectSubjects; set => selectSubjects = value; }
+        public DataTable CkvalueDataTbale { get => ckvalueDataTbale; set => ckvalueDataTbale = value; }
+        public DataTable BytDataTable { get => bytDataTable; set => bytDataTable = value; }
 
         public void RegisterEvent(_IShockwaveFlashEvents_FSCommandEventHandler eventFun)
         {
@@ -171,6 +176,9 @@ namespace VirtualTeachCarola.Base
             Config.Http = data["Setup"]["Http"];
             Config.Temp = data["Setup"]["Temp"];
             Config.Pressure = data["Setup"]["Pressure"];
+
+            ckvalueDataTbale = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM CkValue");
+            bytDataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM BYT");
         }
 
         public List<string> GetSubmitReport()
@@ -207,6 +215,107 @@ namespace VirtualTeachCarola.Base
                 res.Add(content);
             }
 
+            return res;
+        }
+
+        public static bool ExcuteSQLNeedTwoPoint(RBData bData, 
+            RBData rData,
+            int valueType,
+            DataTable dataTable,
+            ref Boolean canYoumen
+            )
+        {
+            bool res = false;
+            bool isMax = false;
+            try
+            {
+                if (bData.BaseValue == "" || rData.BaseValue == "")
+                {
+                    return false;
+                }
+
+                string sql = "CheckPoint1 = '" + rData.BaseValue
+                    + "' AND CheckPoint2 = '" + bData.BaseValue
+                    + "' AND Gearshift = '" + Manager.GetInstance().Car.Gearshift
+                    + "' AND accorrun = " + Manager.GetInstance().Car.Power()
+                    + " AND breaks = " + Manager.GetInstance().Car.BreakType
+                    + " AND ValueType = " + valueType
+                    + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
+                DataRow[] rows = dataTable.Select(sql);
+
+                if (rows.Length == 0)
+                {
+                    sql = "CheckPoint1 = '" + bData.BaseValue
+                        + "' AND CheckPoint2 = '" + rData.BaseValue
+                        + "' AND Gearshift = '" + Manager.GetInstance().Car.Gearshift
+                        + "' AND accorrun = " + Manager.GetInstance().Car.Power()
+                        + " AND breaks = " + Manager.GetInstance().Car.BreakType
+                        + " AND ValueType = " + valueType
+                        + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
+                    rows = dataTable.Select(sql);
+                    if (rows.Length == 0)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    isMax = true;
+                }
+
+                string v = (string)rows[0]["Nvalue"];
+                string[] sArray = Regex.Split(v, "-", RegexOptions.IgnoreCase);
+
+                if (isMax)
+                {
+                    rData.MinValue = float.Parse(sArray[0]);
+                    canYoumen = true;
+
+                    if (sArray.Length > 1)
+                    {
+                        rData.MaxValue = float.Parse(sArray[1]);
+                    }
+                    else
+                    {
+                        rData.MaxValue = float.Parse(sArray[0]);
+                    }
+                }
+                else
+                {
+                    bData.MinValue = float.Parse(sArray[0]);
+
+                    if (sArray.Length > 1)
+                    {
+                        bData.MaxValue = float.Parse(sArray[1]);
+                    }
+                    else
+                    {
+                        bData.MaxValue = float.Parse(sArray[0]);
+                    }
+                }
+
+                bool isGvalue = false;
+
+                if (rows[0]["Gzm"].GetType().Name != "DBNull" && Manager.GetInstance().HasSubject((string)rows[0]["Gzm"], ref isGvalue))
+                {
+                    if (isGvalue)
+                    {
+                        rData.MinValue = float.Parse((string)rows[0]["GValue"]);
+                    }
+                    else
+                    {
+                        rData.MinValue = float.Parse((string)rows[0]["DValue"]);
+                    }
+
+                    bData.MinValue = 0;
+                }
+
+                res = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
             return res;
         }
     }

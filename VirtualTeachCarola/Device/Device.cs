@@ -12,7 +12,6 @@ namespace VirtualTeachCarola
 {
     internal class Device
     {
-        DataTable dataTable = null;
         int valueType = 0;
         System.Threading.Timer threadTime;
         AxShockwaveFlashObjects.AxShockwaveFlash flashContrl = null;
@@ -20,16 +19,15 @@ namespace VirtualTeachCarola
         RBData rbValue = new RBData();
         RBData bbValue = new RBData();
         DataRow target = null;
-        bool canYouMen = false;
+        Boolean canYouMen = false;
 
         public int ValueType { get => valueType; set => valueType = value; }
-        public DataTable DataTable { get => dataTable; set => dataTable = value; }
         public Timer ThreadTime { get => threadTime; set => threadTime = value; }
         public AxShockwaveFlash FlashContrl { get => flashContrl; set => flashContrl = value; }
         public RBData RbValue { get => rbValue; set => rbValue = value; }
         public RBData BbValue { get => bbValue; set => bbValue = value; }
         public string TipValue { get => tipValue; set => tipValue = value; }
         public DataRow Target { get => target; set => target = value; }
-        public bool CanYouMen { get => canYouMen; set => canYouMen = value; }
+        public Boolean CanYouMen { get => canYouMen; set => canYouMen = value; }
     }
 }

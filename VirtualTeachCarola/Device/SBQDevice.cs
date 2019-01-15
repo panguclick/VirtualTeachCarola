@@ -13,11 +13,20 @@ namespace VirtualTeachCarola
     {
         public void FlashFlashCommand(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FSCommandEvent e)
         {
+            SetTipValue("");
+
             if (e.command == "power")
             {
-                if (BbValue.BaseValue != "" && RbValue.BaseValue != "")
+                if (e.args == "off" || e.args == "acc")
+                {
+                }
+                else if (BbValue.BaseValue != "" && RbValue.BaseValue != "")
                 {
                     UpdateRBValue();
+                }
+                else
+                {
+                    SetTipValue("");
                 }
             }
             else if (e.command == "BB")
@@ -80,11 +89,21 @@ namespace VirtualTeachCarola
                     + "' AND CkPoint2 = '" + bbData.BaseValue
                     + "' AND Accorrun = " + Manager.GetInstance().Car.Power()
                     + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
-                DataRow[] rowData = this.DataTable.Select(sql);
+                DataRow[] rowData = Manager.GetInstance().BytDataTable.Select(sql);
 
                 if (rowData.Length == 0)
                 {
-                    TipValue = "Z";
+                    bool isYoumen = false;
+                    Manager.ExcuteSQLNeedTwoPoint(bbData, rbData, 1, Manager.GetInstance().CkvalueDataTbale, ref isYoumen);
+
+                    CanYouMen = isYoumen;
+                    float value = rbData.MinValue - bbData.MinValue;
+                    if (CanYouMen == true)
+                    {
+                        value = rbData.MinValue + Manager.GetInstance().Car.Speed * (rbData.MaxValue - rbData.MinValue) / 100;
+                    }
+
+                    TipValue = "Z" + value.ToString();
                     return res;
                 }
 

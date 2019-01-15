@@ -105,7 +105,7 @@ namespace VirtualTeachCarola
                     + " AND breaks = " + Manager.GetInstance().Car.BreakType
                     + " AND ValueType = " + ValueType
                     + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
-                DataRow[] bbData = DataTable.Select(sql);
+                DataRow[] bbData = Manager.GetInstance().CkvalueDataTbale.Select(sql);
 
                 if (bbData.Length == 0)
                 {
@@ -134,112 +134,18 @@ namespace VirtualTeachCarola
             return res;
         }
 
-        private bool ExcuteSQLNeedTwoPoint(RBData bData, RBData rData)
-        {
-            bool res = false;
-            bool isMax = false;
-            try
-            {
-                if (bData.BaseValue == "" || rData.BaseValue == "")
-                {
-                    return false;
-                }
-
-                string sql = "CheckPoint1 = '" + rData.BaseValue
-                    + "' AND CheckPoint2 = '" + bData.BaseValue
-                    + "' AND Gearshift = '" + Manager.GetInstance().Car.Gearshift
-                    + "' AND accorrun = " + Manager.GetInstance().Car.Power()
-                    + " AND breaks = " + Manager.GetInstance().Car.BreakType
-                    + " AND ValueType = " + ValueType
-                    + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
-                DataRow[] rows = DataTable.Select(sql);
-
-                if (rows.Length == 0)
-                {
-                    sql = "CheckPoint1 = '" + bData.BaseValue
-                        + "' AND CheckPoint2 = '" + rData.BaseValue
-                        + "' AND Gearshift = '" + Manager.GetInstance().Car.Gearshift
-                        + "' AND accorrun = " + Manager.GetInstance().Car.Power()
-                        + " AND breaks = " + Manager.GetInstance().Car.BreakType
-                        + " AND ValueType = " + ValueType
-                        + " AND IsLine = " + Manager.GetInstance().Car.IsLine;
-                    rows = DataTable.Select(sql);
-                    if (rows.Length == 0)
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    isMax = true;
-                }
-
-                string v = (string)rows[0]["Nvalue"];
-                string[] sArray = Regex.Split(v, "-", RegexOptions.IgnoreCase);
-
-                if(isMax)
-                {
-                    rData.MinValue = float.Parse(sArray[0]);
-                    CanYouMen = true;
-
-                    if (sArray.Length > 1)
-                    {
-                        rData.MaxValue = float.Parse(sArray[1]);
-                    }
-                    else
-                    {
-                        rData.MaxValue = float.Parse(sArray[0]);
-                    }
-                }
-                else
-                {
-                    bData.MinValue = float.Parse(sArray[0]);
-
-                    if (sArray.Length > 1)
-                    {
-                        bData.MaxValue = float.Parse(sArray[1]);
-                    }
-                    else
-                    {
-                        bData.MaxValue = float.Parse(sArray[0]);
-                    }
-                }
-
-                bool isGvalue = false;
-
-                if(rows[0]["Gzm"].GetType().Name != "DBNull" && Manager.GetInstance().HasSubject((string)rows[0]["Gzm"], ref isGvalue))
-                {
-                    if(isGvalue)
-                    {
-                        rData.MinValue = float.Parse((string)rows[0]["GValue"]);
-                    }
-                    else
-                    {
-                        rData.MinValue = float.Parse((string)rows[0]["DValue"]);
-                    }
-
-                    bData.MinValue = 0;
-                }
-
-                res = true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-            return res;
-        }
-
         private void UpdateRBValue()
         {
             CanYouMen = false;
+            bool isYoumen = false;
 
             if (ExcuteSQLNeedOnePoint(BbValue) && ExcuteSQLNeedOnePoint(RbValue))
             {
                 SetTipValue(RbValue.MinValue - BbValue.MinValue);
             }
-            else if(ExcuteSQLNeedTwoPoint(BbValue, RbValue))
+            else if (Manager.ExcuteSQLNeedTwoPoint(BbValue, RbValue, ValueType, Manager.GetInstance().CkvalueDataTbale, ref isYoumen))
             {
+                CanYouMen = isYoumen;
                 float value = RbValue.MinValue - BbValue.MinValue;
                 if (CanYouMen == true)
                 {

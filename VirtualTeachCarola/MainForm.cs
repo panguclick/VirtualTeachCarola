@@ -205,11 +205,6 @@ namespace VirtualTeachCarola
                 Manager.GetInstance().InitSubject(Manager.GetInstance().User.HttpExam.TestContent);
             }
 
-            LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\index.swf");
-            mWYBDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM CkValue");
-            mSBQDvice.DataTable = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM BYT");
-
-
             Manager.GetInstance().UpdateSubject();
 
             LoadFlash.SetVariable("Temp", Manager.GetInstance().Config.Temp);
@@ -217,6 +212,8 @@ namespace VirtualTeachCarola
 
             if(Manager.GetInstance().User.Mode == "kaohe")
             {
+                LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\index.swf");
+
                 TimeSpan timeSpan = Manager.GetInstance().User.HttpExam.TEndTime - DateTime.Now.ToLocalTime();
                 LoadFlash.SetVariable("LoginInf", Manager.GetInstance().User.HttpStudent.Data.StuId
                     + "," + Manager.GetInstance().User.HttpStudent.Data.StuName
@@ -231,6 +228,10 @@ namespace VirtualTeachCarola
             else
             {
                 Manager.GetInstance().User.PracticID = Manager.GetInstance().User.HttpStudent.Data.StuId + DateTime.Now.ToFileTimeUtc().ToString();
+
+                SetGZForm form = new SetGZForm();
+                form.IsLogin = true;
+                form.ShowDialog(this);
             }
 
         }

@@ -15,6 +15,10 @@ namespace VirtualTeachCarola
     public partial class SetGZForm : Form
     {
         DataTable mDataTable = null;
+        bool isLogin = false;
+
+        public bool IsLogin { get => isLogin; set => isLogin = value; }
+
         public SetGZForm()
         {
             InitializeComponent();
@@ -57,6 +61,12 @@ namespace VirtualTeachCarola
             else if(e.command == "Login")
             {
                 Manager.GetInstance().UpdateSubject();
+
+                if (isLogin)
+                {
+                    Manager.GetInstance().MMainForm.LoadFlash.LoadMovie(0, System.IO.Directory.GetCurrentDirectory() + "\\Data\\Surface\\index.swf");
+                }
+
                 this.Close();
             }
         }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VirtualTeachCarola.Base;
@@ -16,6 +17,7 @@ namespace VirtualTeachCarola
         bool beginMove = false;//初始化鼠标位置
         int currentXPosition;
         int currentYPosition;
+        private DataRow[] dataRows;
 
         public IT2Form()
         {
@@ -24,41 +26,16 @@ namespace VirtualTeachCarola
 
         private void InitData()
         {
-            if(this.listViewDATA.Items.Count > 0)
+            if(listViewDATA.Items.Count > 0)
             {
                 return;
             }
 
-            DataRow[] rows = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM zdy").Select();
+            dataRows = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM zdy ORDER BY ID").Select();
 
-            for (int i = 0; i < rows.Length; i++)
-            {
-                ListViewItem lvi = new ListViewItem();
+            UpdateData();
 
-                if (rows[i]["Choice"].GetType().Name == "DBNull")
-                {
-                    lvi.Text = " ";
-                }
-                else
-                {
-                    lvi.Text = (string)rows[i]["Choice"];
-                }
-                lvi.SubItems.Add((string)rows[i]["ProName"]);
-                lvi.SubItems.Add((string)rows[i]["PValues"]);
-
-                if (rows[i]["Units"].GetType().Name == "DBNull")
-                {
-                    lvi.SubItems.Add(" ");
-                }
-                else
-                {
-                    lvi.SubItems.Add((string)rows[i]["Units"]);
-                }
-
-                this.listViewDATA.Items.Add(lvi);
-            }
-
-            rows = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM GzInfo").Select();
+            DataRow[] rows = AccessHelper.GetInstance().GetDataTableFromDB("SELECT * FROM GzInfo").Select();
 
             for (int i = 0; i < rows.Length; i++)
             {
@@ -74,6 +51,102 @@ namespace VirtualTeachCarola
                 }
             }
 
+            Timer timer = new Timer();//实例化Timer类，设置间隔时间为10000毫秒；
+            timer.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
+            timer.Tick += new EventHandler(UpdateTimerMethod);//到达时间的时候执行事件
+            timer.Interval = 1000;
+        }
+        private void UpdateTimerMethod(object sender, EventArgs e)
+        {
+            if(listViewDATA.Items.Count <= 0)
+            {
+                return;
+            }
+
+            ListViewItem lvi = listViewDATA.Items[12];
+            lvi.SubItems[2].Text = Manager.GetInstance().Car.EnginRunTime.ToString();
+
+        }
+
+
+        private void UpdateData()
+        {
+            bool needCreate = listViewDATA.Items.Count > 0 ? false : true;
+
+            for (int i = 0; i < dataRows.Length; i++)
+            {
+                ListViewItem lvi = null;
+                if (needCreate)
+                {
+                    lvi  = new ListViewItem();
+                }
+                else
+                {
+                    lvi = listViewDATA.Items[i];
+                }
+
+                if (needCreate)
+                {
+                    if (dataRows[i]["Choice"].GetType().Name == "DBNull")
+                    {
+                        lvi.Text = " ";
+                    }
+                    else
+                    {
+                        lvi.Text = (string)dataRows[i]["Choice"];
+                    }
+
+                    lvi.SubItems.Add((string)dataRows[i]["ProName"]);
+                    lvi.SubItems.Add(GetPvalue((string)dataRows[i]["PValues"]));
+
+                    if (dataRows[i]["Units"].GetType().Name == "DBNull")
+                    {
+                        lvi.SubItems.Add(" ");
+                    }
+                    else
+                    {
+                        lvi.SubItems.Add((string)dataRows[i]["Units"]);
+                    }
+
+                    listViewDATA.Items.Add(lvi);
+                }
+                else
+                {
+                    lvi.SubItems[2].Text = GetPvalue((string)dataRows[i]["PValues"]);
+                }
+
+            }
+
+        }
+
+        private string GetPvalue(string value)
+        {
+            string res = "";
+
+            if(value.Equals("ON") || value.Equals("OFF"))
+            {
+                res = value;
+            }
+            else
+            {
+                string[] sArray = Regex.Split(value, ",", RegexOptions.IgnoreCase);
+
+                if(sArray.Length > 1)
+                {
+                    float min = float.Parse(sArray[0]);
+                    float max = float.Parse(sArray[1]);
+
+                    float v =  min + Manager.GetInstance().Car.Speed * (max - min) / 100;
+                    res = v.ToString("0.##");
+                }
+                else
+                {
+                    res = value;
+                }
+
+            }
+
+            return res;
         }
 
         private void Flash_Enter(object sender, EventArgs e)
@@ -160,9 +233,10 @@ namespace VirtualTeachCarola
                     axShockwaveFlash1.SetVariable("enterBTN", "0");
                 }
             }
-
-            Console.WriteLine("e.command = " + e.command);
-            Console.WriteLine("e.args = " + e.args);
+            else if (e.command == "youmeng")
+            {
+                UpdateData();
+            }
         }
 
         private void Form_MouseDown(object sender, MouseEventArgs e)
